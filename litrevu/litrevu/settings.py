@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'authentication',
     'reviews',
 ]
@@ -56,7 +58,9 @@ ROOT_URLCONF = 'litrevu.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR.joinpath('templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,7 +123,23 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Add static files directory for static files in project's root
+
+STATICFILES_DIRS = (
+    BASE_DIR.joinpath('static'),
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Crispy forms
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Media
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
