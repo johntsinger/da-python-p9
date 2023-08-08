@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 
@@ -11,3 +13,9 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput,
         label='Password'
     )
+
+
+class SignupForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = ('username', 'email', 'password1', 'password2')
