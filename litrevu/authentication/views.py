@@ -95,11 +95,11 @@ def parameters_view(request):
             else:
                 password_form = MyPasswordChangeForm(request.user)
                 delete_form = DeleteAccountForm()
-        if 'delete-account' in request.POST:
+        if 'delete_account' in request.POST:
             delete_form = DeleteAccountForm(request.POST)
             if delete_form.is_valid():
                 user = authenticate(
-                    username=request.user.username,
+                    username=delete_form.cleaned_data['username'],
                     password=delete_form.cleaned_data['password'],
                 )
                 if user is not None:
@@ -118,7 +118,6 @@ def parameters_view(request):
         context={
             'password_form': password_form,
             'email_form': email_form,
-            'email': request.user.email,
             'delete_form': delete_form
         },
     )

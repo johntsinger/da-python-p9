@@ -48,6 +48,12 @@ class EmailChangeForm(forms.Form):
 
 
 class DeleteAccountForm(forms.Form):
+    delete_account = forms.BooleanField(
+        widget=forms.HiddenInput,
+        initial=True,
+    )
+    username = forms.CharField(
+        max_length=63)
     password = forms.CharField(
         max_length=63,
         widget=forms.PasswordInput

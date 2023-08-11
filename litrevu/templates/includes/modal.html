@@ -16,9 +16,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-                    <input class="btn" type="submit" value="{{ modal_input_value }}" name="{{ modal_input_name }}">
-                    <input type="hidden" name="table-id" value="{{ table_id }}">
+                    <div class="d-flex flex-column w-100">
+                        <button type="button" class="btn btn-secondary mb-4" data-bs-dismiss="modal">Return</button>
+                        <button type="submit" class="btn btn-danger">{{ modal_input_value }}</button>
+                    </div>
                 </div>
             </form>
         </div>
