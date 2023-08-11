@@ -3,11 +3,13 @@ from django.contrib import messages
 from django.contrib.auth import (
     authenticate, login, logout, update_session_auth_hash
 )
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from authentication.forms import (
     LoginForm, SignupForm, MyPasswordChangeForm, EmailChangeForm,
-    DeleteAccountForm
+    DeleteAccountForm, ImageChangeForm
 )
+from authentication.models import UserProfile
 
 
 def login_view(request):
@@ -58,6 +60,7 @@ def signup_view(request):
     )
 
 
+@login_required
 def parameters_view(request):
     if request.method == "POST":
         if 'change_password' in request.POST:
@@ -73,6 +76,9 @@ def parameters_view(request):
                 )
                 return redirect('parameters')
             else:
+                image_form = ImageChangeForm(
+                    instance=request.user.userprofile
+                )
                 email_form = EmailChangeForm(
                     initial={'current_email': request.user.email}
                 )
@@ -93,8 +99,32 @@ def parameters_view(request):
                 )
                 return redirect('parameters')
             else:
+                image_form = ImageChangeForm(
+                    instance=request.user.userprofile
+                )
                 password_form = MyPasswordChangeForm(request.user)
                 delete_form = DeleteAccountForm()
+
+        if 'change_image' in request.POST:
+            image_form = ImageChangeForm(
+                request.POST,
+                request.FILES,
+                instance=request.user.userprofile
+            )
+            if image_form.is_valid():
+                image_form.save()
+                messages.success(
+                    request,
+                    'Your profile image was successfully updated !'
+                )
+                return redirect('parameters')
+            else:
+                email_form = EmailChangeForm(
+                    initial={'current_email': request.user.email}
+                )
+                password_form = MyPasswordChangeForm(request.user)
+                delete_form = DeleteAccountForm()
+
         if 'delete_account' in request.POST:
             delete_form = DeleteAccountForm(request.POST)
             if delete_form.is_valid():
@@ -108,6 +138,7 @@ def parameters_view(request):
                 else:
                     return redirect('parameters')
     else:
+        image_form = ImageChangeForm(instance=request.user.userprofile)
         password_form = MyPasswordChangeForm(request.user)
         email_form = EmailChangeForm(
             initial={'current_email': request.user.email})
@@ -118,6 +149,7 @@ def parameters_view(request):
         context={
             'password_form': password_form,
             'email_form': email_form,
-            'delete_form': delete_form
+            'delete_form': delete_form,
+            'image_form': image_form,
         },
     )

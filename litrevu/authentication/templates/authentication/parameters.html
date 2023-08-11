@@ -6,6 +6,18 @@
     <div class="vstack gap-4 mx-auto col-md-8 col-lg-6">
         <div class="mx-4">
             <legend class="border-bottom py-2">
+                Change my image
+            </legend>
+            <form method="post" class="mx-4 pt-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form|crispy }}
+                <div class="my-4 d-flex flex-column">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+        <div class="mx-4">
+            <legend class="border-bottom py-2">
                 Change my password
             </legend>
             <form method="post" class="mx-4 pt-2">

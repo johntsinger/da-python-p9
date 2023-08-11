@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'authentication',
     'reviews',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

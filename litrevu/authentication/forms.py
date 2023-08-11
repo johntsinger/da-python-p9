@@ -22,7 +22,15 @@ class SignupForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
-class UserProfileForm(forms.ModelForm):
+class ImageChangeForm(forms.ModelForm):
+    change_image = forms.BooleanField(
+        widget=forms.HiddenInput,
+        initial=True
+    )
+    image = forms.ImageField(
+        required=False,
+    )
+
     class Meta:
         model = UserProfile
         fields = ('image',)
