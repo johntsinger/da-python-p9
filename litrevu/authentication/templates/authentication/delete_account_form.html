@@ -1,0 +1,10 @@
+{% load crispy_forms_tags %}
+
+<p>Are you sure you want to delete your whole account ?</p>
+<p><strong class="text-danger">You will lose everything !</strong></p>
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field|as_crispy_field }}
+    </div>
+{% endfor %}

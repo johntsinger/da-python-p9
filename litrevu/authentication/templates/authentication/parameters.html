@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page-title %}
+    Profil
+{% endblock page-title%}
+
+{% block content %}
+    <div class="vstack gap-2 my-2">
+        <div class="mx-2 border border-3">
+            <legend class="border-bottom py-2 text-center">
+                Change my password
+            </legend>
+            <form method="post" class="mx-4 pt-2">
+                {% csrf_token %}
+                {{ password_form|crispy }}
+                <div class="d-flex justify-content-md-end">
+                    <input class="btn me-3 my-3" type="submit" value="Valider" name="valider">
+                </div>
+            </form>
+        </div>
+        <div class="mx-2 border border-3">
+            <legend class="border-bottom py-2 text-center">
+                Change my email
+            </legend>
+            <form method="post" class="mx-4 pt-2">
+                {% csrf_token %}
+                {{ email_form|crispy }}
+                <div class="d-flex justify-content-md-end">
+                    <input class="btn me-3 my-3" type="submit" value="Valider" name="valider">
+                </div>
+            </form>
+        </div>
+        <div class="mx-2 border border-3">
+            <legend class="border-bottom py-2 text-center text-danger">Delete my account</legend>
+            <!-- Modal -->
+            <div class="mx-4 my-3">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#account-delete">I want to delete my account</a>
+                {% include 'modal.html' with modal_id='account-delete' modal_title='Delete your account' form=delete_form modal_input_value="Yes I'm sure" modal_input_name='delete-account' %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,26 @@
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" aria-labelledby="deleteAccountModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ modal_title }} {{ modal_context_data }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="text-start">
+                        {% block modal-content %}{% endblock modal-content %}
+                    </div>
+                    <div class="text-start">
+                        {{ form }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+                    <input class="btn" type="submit" value="{{ modal_input_value }}" name="{{ modal_input_name }}">
+                    <input type="hidden" name="table-id" value="{{ table_id }}">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

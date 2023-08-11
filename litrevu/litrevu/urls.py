@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from authentication import views as auth_views
 
 from reviews import views as re_views
@@ -25,5 +27,12 @@ urlpatterns = [
     path('', auth_views.login_view, name='login'),
     path('logout/', auth_views.logout_view, name='logout'),
     path('signup/', auth_views.signup_view, name='signup'),
+    path('usermodifications/', auth_views.parameters_view, name='parameters'),
     path('home/', re_views.home_view, name='home'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
