@@ -3,12 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="vstack gap-4 mx-auto col-md-8 col-lg-6">
-        <div class="mx-4">
+    <div class="vstack gap-4 mb-4 mx-auto col-md-8 col-lg-6">
+        <div class="px-4 rounded-3" style="background-color: #EFEFEF;">
             <legend class="border-bottom py-2">
                 Change my image
             </legend>
-            <form method="post" class="mx-4 pt-2" enctype="multipart/form-data">
+            <form method="post" class="mx-0 mx-md-4 pt-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ image_form|crispy }}
                 <div class="my-4 d-flex flex-column">
@@ -16,11 +16,11 @@
                 </div>
             </form>
         </div>
-        <div class="mx-4">
+        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
             <legend class="border-bottom py-2">
                 Change my password
             </legend>
-            <form method="post" class="mx-4 pt-2">
+            <form method="post" class="mx-0 mx-md-4 pt-2">
                 {% csrf_token %}
                 {{ password_form|crispy }}
                 <div class="my-4 d-flex flex-column">
@@ -28,11 +28,11 @@
                 </div>
             </form>
         </div>
-        <div class="mx-4">
+        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
             <legend class="border-bottom py-2">
                 Change my email
             </legend>
-            <form method="post" class="mx-4 pt-2">
+            <form method="post" class="mx-0 mx-md-4 pt-2">
                 {% csrf_token %}
                 {{ email_form|crispy }}
                 <div class="my-4 d-flex flex-column">
@@ -40,11 +40,11 @@
                 </div>
             </form>
         </div>
-        <div class="mx-4">
+        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
             <legend class="border-bottom py-2 text-danger">Delete my account</legend>
             <!-- Modal -->
-            <div class="mx-4 pt-2 d-flex flex-column">
-                <a class="btn btn-danger mb-5" href="#" data-bs-toggle="modal" data-bs-target="#account-delete">I want to delete my account</a>
+            <div class="mx-0 mx-md-4 pt-2 d-flex flex-column">
+                <a class="btn btn-danger mb-4" href="#" data-bs-toggle="modal" data-bs-target="#account-delete">I want to delete my account</a>
                 {% include 'includes/modal.html' with modal_id='account-delete' modal_title='Delete your account' form=delete_form modal_input_value="Yes I'm sure" modal_input_name='delete-account' %}
             </div>
         </div>
