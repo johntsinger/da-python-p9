@@ -1,8 +1,8 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg" style="background-color: #ebebeb;">
-    <div class="container">
+<nav class="navbar navbar-expand-lg border-bottom fixed-top z-3" style="background-color: #FFFFFF;">
+    <div class="container-fluid px-4">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'img/litrevu_logo.svg' %}" alt="LITRevu logo" width="30px" height="30px">
+            <img class="rounded-circle" src="{% static 'img/litrevu_logo.svg' %}" alt="LITRevu logo" width="30px" height="30px">
             LITRevu
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,11 +19,11 @@
             <div class="navbar-nav">
                 <div class="nav-item dropdown">
                     {% if user.is_authenticated %}
-                    <span id="user" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="nav-link dropdown-toggle" role="button" data-bs-display="static">
-                        <img class="rounded-circle me-2" width="30" height="30" src="{{ user.userprofile.image.url }}" alt="{{ user.username }} profile picture">
+                    <span id="user" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="nav-link dropdown-toggle {% if user.is_authenticated %} border rounded-pill {% endif %}" role="button" data-bs-display="static">
+                        <img class="object-fit-cover rounded-circle me-2" width="30" height="30" src="{{ user.userprofile.image.url }}" alt="{{ user.username }} profile picture">
                         {{ user }}
                     </span>
-                    <div class="dropdown-menu dropdown-menu-right top-level fade-down" data-bs-popper='none'>
+                    <div class="dropdown-menu dropdown-menu-end mt-2 top-level fade-down" data-bs-popper='none'>
                         <div>
                             <a class="dropdown-item" href="{% url 'parameters' %}">
                                 <!-- icon parameters -->
