@@ -4,10 +4,13 @@
 
 {% block content %}
     <div class="vstack gap-4 mb-4 mx-auto col-md-8 col-lg-6">
-        <div class="px-4 rounded-3" style="background-color: #EFEFEF;">
+        <div class="px-4 rounded-3 border" style="background-color: #f0f2f5;">
             <legend class="border-bottom py-2">
                 Change my image
             </legend>
+            <div class="container d-flex justify-content-center">
+                <img class="object-fit-cover rounded-circle" width="150" height="150" src="{{ user.userprofile.image.url }}" alt="Profile Image">
+            </div>
             <form method="post" class="mx-0 mx-md-4 pt-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ image_form|crispy }}
@@ -16,7 +19,7 @@
                 </div>
             </form>
         </div>
-        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
+        <div class="px-4 rounded-3 border" style="background-color: #f0f2f5;">
             <legend class="border-bottom py-2">
                 Change my password
             </legend>
@@ -28,7 +31,7 @@
                 </div>
             </form>
         </div>
-        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
+        <div class="px-4 rounded-3 border" style="background-color: #f0f2f5;">
             <legend class="border-bottom py-2">
                 Change my email
             </legend>
@@ -40,12 +43,12 @@
                 </div>
             </form>
         </div>
-        <div class="px-4 rounded-3" style="background-color: #F2F3F4;">
+        <div class="px-4 rounded-3 border" style="background-color: #f0f2f5;">
             <legend class="border-bottom py-2 text-danger">Delete my account</legend>
             <!-- Modal -->
             <div class="mx-0 mx-md-4 pt-2 d-flex flex-column">
                 <a class="btn btn-danger mb-4" href="#" data-bs-toggle="modal" data-bs-target="#account-delete">I want to delete my account</a>
-                {% include 'includes/modal.html' with modal_id='account-delete' modal_title='Delete your account' form=delete_form modal_input_value="Yes I'm sure" modal_input_name='delete-account' %}
+                {% include 'includes/modal.html' with modal_id='account-delete' modal_title='Delete your account' form=delete_form modal_input_value="Yes I'm sure, delete everything" modal_input_name='delete-account' %}
             </div>
         </div>
     </div>

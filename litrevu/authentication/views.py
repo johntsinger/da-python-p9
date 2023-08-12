@@ -52,6 +52,7 @@ def signup_view(request):
             # auto login user
             login(request, user)
             return redirect(settings.LOGIN_REDIRECT_URL)
+        messages.error(request, 'Please correct the errors below.')
     return render(
         request,
         'authentication/signup.html',

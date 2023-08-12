@@ -15,6 +15,11 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(UserCreationForm):
+    email = forms.EmailField(
+        required=True,
+        label='Email address'
+    )
+
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
         fields = ('username', 'email', 'password1', 'password2')
