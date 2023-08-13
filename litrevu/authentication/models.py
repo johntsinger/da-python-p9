@@ -5,7 +5,10 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
     image = models.ImageField(
         default='images/profile/default/profile_image.png',
         upload_to='images/profile/user',
