@@ -11,7 +11,7 @@
             <div class="container d-flex justify-content-center">
                 <img class="object-fit-cover rounded-circle" width="150" height="150" src="{{ user.userprofile.image.url }}" alt="Profile Image">
             </div>
-            <form method="post" class="mx-0 mx-md-4 pt-2" enctype="multipart/form-data">
+            <form method="post" class="mx-2 mx-md-4 pt-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ image_form|crispy }}
                 <div class="my-4 d-flex flex-column">

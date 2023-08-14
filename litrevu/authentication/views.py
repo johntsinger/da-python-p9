@@ -19,15 +19,15 @@ from authentication.forms import (
 
 
 def login_view(request):
-    form = LoginForm()
+    login_form = LoginForm()
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
             user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
+                username=login_form.cleaned_data['username'],
+                password=login_form.cleaned_data['password']
             )
             if user is not None:
                 login(request, user)
@@ -39,7 +39,7 @@ def login_view(request):
     return render(
         request,
         'authentication/login.html',
-        context={'form': form}
+        context={'login_form': login_form}
     )
 
 
