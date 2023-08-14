@@ -2,6 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db import models
+from utils.media import images_path
 
 
 class UserProfile(models.Model):
@@ -10,8 +11,8 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
     )
     image = models.ImageField(
-        default='images/profile/default/profile_image.png',
-        upload_to='images/profile/user',
+        default='images/userprofiles/default/profile_image.png',
+        upload_to=images_path,
         verbose_name='Profile Image',
         blank=True,
     )
@@ -27,7 +28,7 @@ class UserProfile(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.image:
-            self.image = 'images/profile/default/profile_image.png'
+            self.image = 'images/userprofiles/default/profile_image.png'
         super().save()
 
     def __str__(self):

@@ -81,7 +81,7 @@ def parameters_view(request):
     # Retrieves the current image. If the image is default, it takes
     # the value false, as clear returns false if checked.
     current_image = request.user.userprofile.image
-    if current_image == 'images/profile/default/profile_image.png':
+    if current_image == 'images/userprofiles/default/profile_image.png':
         current_image = False
 
     if request.method == "POST":
@@ -95,12 +95,12 @@ def parameters_view(request):
                 # Check if the image has changed, otherwise do not save it
                 if image_form.cleaned_data['image'] not in (
                         current_image,
-                        'images/profile/default/profile_image.png'
+                        'images/userprofiles/default/profile_image.png'
                 ):
                     image_form.save()
                     messages.success(
                         request,
-                        'Your profile image was successfully updated !'
+                        'Your profile image has been successfully updated !'
                     )
                 return redirect('parameters')
             messages.error(request, 'Please correct the errors below.')
@@ -114,7 +114,7 @@ def parameters_view(request):
                 update_session_auth_hash(request, user)
                 messages.success(
                     request,
-                    'Your password was successfully updated !'
+                    'Your password has been successfully updated !'
                 )
                 return redirect('parameters')
             messages.error(request, 'Please correct the errors below.')
@@ -130,7 +130,7 @@ def parameters_view(request):
                 user.save()
                 messages.success(
                     request,
-                    'Your email was successfully updated !'
+                    'Your email has been successfully updated !'
                 )
                 return redirect('parameters')
             messages.error(request, 'Please correct the errors below.')
