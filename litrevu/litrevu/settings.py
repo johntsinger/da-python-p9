@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
-    'authentication',
-    'reviews',
+    'authentication.apps.AuthenticationConfig',
+    'reviews.apps.ReviewsConfig',
     'django_cleanup.apps.CleanupConfig',
 ]
 
@@ -150,7 +150,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'feed'
 
 # Messages tags
 

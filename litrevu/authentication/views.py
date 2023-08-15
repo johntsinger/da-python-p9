@@ -21,7 +21,7 @@ from authentication.forms import (
 def login_view(request):
     login_form = LoginForm()
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('feed')
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
@@ -34,7 +34,7 @@ def login_view(request):
                 next_url = request.GET.get('next')
                 if next_url:
                     return redirect(next_url)
-                return redirect('home')
+                return redirect('feed')
             messages.error(request, 'Invalid username or password')
     return render(
         request,
@@ -50,7 +50,7 @@ def logout_view(request):
 
 def signup_view(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('feed')
     user_form = SignupForm()
     if request.method == 'POST':
         user_form = SignupForm(request.POST)
