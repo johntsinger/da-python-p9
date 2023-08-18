@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{% url 'create-ticket' %}" class="btn btn-primary mx-2" role="button">New ticket</a>
+        <a href="{% url 'create-review' %}" class="btn btn-primary mx-2" role="button">New review</a>
+    </div>
+    <div class="container">
+        {% for ticket in tickets %}
+            {% include 'reviews/ticket_snippet.html' %}
+        {% endfor %}
+    </div>
+{% endblock content %}

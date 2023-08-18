@@ -19,12 +19,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from reviews import views as re_views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
-    path('', re_views.home_view, name='home'),
+    path('', include('reviews.urls')),
 ]
 
 if settings.DEBUG:
