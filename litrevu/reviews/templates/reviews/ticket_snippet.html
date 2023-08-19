@@ -1,49 +1,67 @@
-<article class="rounded-3 border px-4 my-4">
-    <header class="d-flex align-items-center my-2 border-bottom">
-        <div class="d-flex align-items-center my-2">
-            <div class="flex-shrink-0">
-                <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ ticket.user.userprofile.image.url }}" alt="{{ ticket.user }} profile image">
-            </div>
-            <div class="flex-grow-1 ms-3">
-                <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">{{ ticket.user }}</a>
-                <small class="text-secondary">{{ ticket.time_created|date:"H:i, M d, Y" }}</small>
-            </div>
-        </div>
-    </header>
-    {% if ticket.review_set %}
-        {% with ticket.review_set.get as review %}
-            <section class="mx-2 d-flex flex-column">
-                <div class="my-2 d-flex">
-                    <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
-                        <h2 class="mx-auto">{{ review.headline }}</h2>
-                    </a>
-                    <p class="star-rating-{{ review.rating }}" id="stars">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                    </p>
+{% with ticket.review_set.get as review %}
+<article class="rounded-3 border px-4 my-4" style="background-color: #f0f2f5">
+    {% if review %}
+        <header class="d-flex align-items-center my-2 border-bottom">
+            <div class="d-flex align-items-center my-2">
+                <div class="flex-shrink-0">
+                    <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ review.user.userprofile.image.url }}" alt="{{ review.user }} profile image">
                 </div>
-                <div class="d-flex flex-column flex-lg-row align-items-center">
-                    <p class="col p-2">{{ review.body }}</p>
+                <div class="flex-grow-1 ms-3">
+                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' review.user.id %}">{{ review.user }}</a>
+                    <small class="text-secondary">{{ review.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
-            </section>
-        {% endwith %}
+            </div>
+        </header>
+        <section class="mx-2 d-flex flex-column">
+            <div class="my-2 d-flex">
+                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
+                    <h2 class="mx-auto">{{ review.headline|capfirst }}</h2>
+                </a>
+                <p class="star-rating-{{ review.rating }}" id="stars">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </p>
+            </div>
+            <div class="d-flex flex-column flex-lg-row align-items-center">
+                <p class="col p-2">{{ review.body|capfirst }}</p>
+            </div>
+        </section>
+        <article class="container border rounded-3 px-4 my-4" style="background-color: #fff">
     {% endif %}
-    <section class="mx-2 d-flex flex-column">
-        <div class="my-2 d-flex">
-            <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
-                <h2 class="mx-auto">{{ ticket.title }}</h2>
-            </a>
-        </div>
-        <div class="d-flex flex-column flex-lg-row align-items-center">
-            {% if ticket.image %}
-            <div>
-                <img class="img-thumbnail float-left" width='150px' height="auto" src="{{ ticket.image.url }}" alt="{{ ticket.title }} image">
+        <header class="d-flex align-items-center my-2 border-bottom">
+            <div class="d-flex align-items-center my-2">
+                <div class="flex-shrink-0">
+                    <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ ticket.user.userprofile.image.url }}" alt="{{ ticket.user }} profile image">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">{{ ticket.user }}</a>
+                    <small class="text-secondary">{{ ticket.time_created|date:"H:i, M d, Y" }}</small>
+                </div>
+            </div>
+        </header>
+        <section class="mx-2 mb-4 d-flex flex-column">
+            <div class="my-2 d-flex">
+                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
+                    <h2 class="mx-auto">{{ ticket.title|capfirst }}</h2>
+                </a>
+            </div>
+            <div class="d-flex flex-column flex-lg-row align-items-center">
+                {% if ticket.image %}
+                <div>
+                    <img class="img-thumbnail float-left" width='150px' height="auto" src="{{ ticket.image.url }}" alt="{{ ticket.title }} image">
+                </div>
+                {% endif %}
+                <p class="col p-2">{{ ticket.description|capfirst }}</p>
+            </div>
+            {% if not review %}
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
             </div>
             {% endif %}
-            <p class="col p-2">{{ ticket.description }}</p>
-        </div>
-    </section>
+        </section>
+    {% if review %}</article>{% endif %}
 </article>
+{% endwith %}
