@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
-from authentication.models import UserProfile
+from authentication.models import UserProfile, User
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
-        label='Username'
+    email = forms.EmailField(
+        label='Email'
     )
     password = forms.CharField(
         widget=forms.PasswordInput,
@@ -15,14 +15,10 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(UserCreationForm):
-    email = forms.EmailField(
-        required=True,
-        label='Email address'
-    )
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('email', 'username', 'password1', 'password2')
 
 
 class ImageChangeForm(forms.ModelForm):
@@ -46,6 +42,33 @@ class MyPasswordChangeForm(PasswordChangeForm):
     )
 
 
+class UsernameChangeForm(forms.Form):
+    change_username = forms.BooleanField(
+        widget=forms.HiddenInput,
+        initial=True,
+    )
+    current_username = forms.CharField(
+        disabled=True,
+        required=False,
+    )
+    new_username = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_new_username(self):
+        username = self.cleaned_data['new_username']
+        if User.objects.exclude(
+            pk=self.user.id
+        ).filter(
+            username=username
+        ).exists():
+            raise forms.ValidationError(
+                f'Username {username} is already in use.')
+        return username
+
+
 class EmailChangeForm(forms.Form):
     change_email = forms.BooleanField(
         widget=forms.HiddenInput,
@@ -56,6 +79,21 @@ class EmailChangeForm(forms.Form):
         required=False,
     )
     new_email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_new_email(self):
+        email = self.cleaned_data['new_email']
+        if User.objects.exclude(
+            pk=self.user.id
+        ).filter(
+            email=email
+        ).exists():
+            raise forms.ValidationError(
+                f'email {email} is already in use.')
+        return email
 
 
 class DeleteAccountForm(forms.Form):

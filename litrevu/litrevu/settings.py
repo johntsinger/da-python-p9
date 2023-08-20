@@ -136,6 +136,9 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Auth model
+AUTH_USER_MODEL = 'authentication.User'
+
 # Crispy forms
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

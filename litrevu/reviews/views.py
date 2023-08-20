@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.db.models import Q, Case, When
 from django.views import View
 from django.views.generic.list import ListView
@@ -11,12 +11,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from reviews.forms import TicketForm
 from reviews.models import Ticket, Review
-
-
-class TicketBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
-    model = Ticket
-    fields = ('title', 'description', 'image')
-    success_url = reverse_lazy('feed')
 
 
 class IndexView(LoginRequiredMixin, ListView):
@@ -28,10 +22,10 @@ class IndexView(LoginRequiredMixin, ListView):
             Q(user=self.request.user)
             # tickets from users followed by the current user
             | Q(user_id__in=self.request.user.following.values_list(
-                "followed_user"))
+                "followed_user", flat=True))
             # tickets answered by users followed by current user
             | Q(review__user__id__in=self.request.user.following.values_list(
-                "followed_user"))
+                "followed_user", flat=True))
         ).annotate(
             # annotate date = ticket time_created if no review for this
             # ticket else review__time_created
@@ -50,10 +44,11 @@ class IndexView(LoginRequiredMixin, ListView):
         return context
 
 
-class UserPostView(TicketBaseView, ListView):
+class UserPostView(LoginRequiredMixin, ListView):
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
+        User = get_user_model()
         user = User.objects.get(id=self.kwargs['user_id'])
         tickets = (
             user.ticket_set.all()
@@ -72,6 +67,12 @@ class UserPostView(TicketBaseView, ListView):
         print(context)
 
         return context
+
+
+class TicketBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
+    model = Ticket
+    fields = ('title', 'description', 'image')
+    success_url = reverse_lazy('feed')
 
 
 class TicketDetailView(TicketBaseView, DetailView):
@@ -94,6 +95,25 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
 
 class TicketDeleteView(TicketBaseView, DeleteView):
+    template_name = 'reviews/ticket_confirm_delete.html'
+
+    def post(self, request, *args, **kwargs):
+        # Set self.object before the usual form processing flow.
+        # Inlined because having DeletionMixin as the first base, for
+        # get_success_url(), makes leveraging super() with ProcessFormView
+        # overly complex.
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
+
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         messages.success(
@@ -112,7 +132,6 @@ class ReviewBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
 
 class ReviewCreateView(ReviewBaseView, CreateView):
     template_name = 'reviews/review_create.html'
-    success_url = reverse_lazy('feed')
     success_message = 'Your review has been successfully created !'
 
     def get_context_data(self, **kwargs):
@@ -120,7 +139,10 @@ class ReviewCreateView(ReviewBaseView, CreateView):
         ticket = None
         if self.kwargs:
             ticket = get_object_or_404(Ticket, pk=self.kwargs['pk'])
+            context['ticket'] = ticket
         context['ticket_form'] = TicketForm(
+            self.request.POST or None,
+            self.request.FILES or None,
             instance=ticket
         )
 
@@ -128,29 +150,53 @@ class ReviewCreateView(ReviewBaseView, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        ticket_form = TicketForm(request.POST, request.FILES)
+        ticket_form = None
+        if not self.kwargs:
+            ticket_form = self.get_form(TicketForm)
 
-        if form.is_valid() and ticket_form.is_valid():
+        if ticket_form and (form.is_valid() and ticket_form.is_valid()):
             return self.form_valid(form, ticket_form)
+        elif not ticket_form and form.is_valid():
+            return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
-    def form_valid(self, form, form2):
-        if not self.kwargs:
+    def form_valid(self, form, form2=None):
+        if form2:
             ticket = form2.save(commit=False)
             ticket.user = self.request.user
             ticket.save()
+            ticket_id = ticket.id
         else:
-            ticket = get_object_or_404(Ticket, pk=self.kwargs['pk'])
+            ticket_id = self.kwargs['pk']
 
         review = form.save(commit=False)
-        review.ticket_id = ticket.id
+        review.ticket_id = ticket_id
         review.user = self.request.user
         review.save()
 
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        self.object = None
+        return self.render_to_response(
+            self.get_context_data(
+                form=form
+            ),
+        )
+
 
 class ReviewUpdateView(ReviewBaseView, UpdateView):
     template_name = 'reviews/review_change.html'
     success_message = 'Your review has been successfully updated !'
+
+
+class ReviewDeleteView(ReviewBaseView, DeleteView):
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(
+            self.request,
+            'Your review has been sucessfully deleted !'
+        )
+
+        return response

@@ -10,7 +10,7 @@ urlpatterns = [
     path('reviews/ticket/create/', re_views.TicketCreateView.as_view(),
          name='create-ticket'),
     path('reviews/ticket/<int:pk>/change', re_views.TicketUpdateView.as_view(),
-         name='update-ticket'),
+         name='change-ticket'),
     path('reviews/ticket/<int:pk>/delete', re_views.TicketDeleteView.as_view(),
          name='delete-ticket'),
     path('reviews/review/create', re_views.ReviewCreateView.as_view(),

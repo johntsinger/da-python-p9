@@ -14,7 +14,8 @@ from authentication.forms import (
     MyPasswordChangeForm,
     EmailChangeForm,
     DeleteAccountForm,
-    ImageChangeForm
+    ImageChangeForm,
+    UsernameChangeForm
 )
 
 
@@ -26,7 +27,7 @@ def login_view(request):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             user = authenticate(
-                username=login_form.cleaned_data['username'],
+                email=login_form.cleaned_data['email'],
                 password=login_form.cleaned_data['password']
             )
             if user is not None:
@@ -72,9 +73,14 @@ def signup_view(request):
 @login_required
 def parameters_view(request):
     image_form = ImageChangeForm(instance=request.user.userprofile)
+    username_form = UsernameChangeForm(
+        user=request.user,
+        initial={'current_username': request.user.username}
+    )
     password_form = MyPasswordChangeForm(request.user)
     email_form = EmailChangeForm(
-        initial={'current_email': request.user.email}
+        user=request.user,
+        initial={'current_email': request.user.email},
     )
     delete_form = DeleteAccountForm()
 
@@ -105,6 +111,23 @@ def parameters_view(request):
                 return redirect('parameters')
             messages.error(request, 'Please correct the errors below.')
 
+        if 'change_username' in request.POST:
+            username_form = UsernameChangeForm(
+                request.POST,
+                user=request.user,
+                initial={'current_username': request.user.username}
+            )
+            if username_form.is_valid():
+                user = request.user
+                user.username = username_form.cleaned_data['new_username']
+                user.save()
+                messages.success(
+                    request,
+                    'Your username has been successfully updated !'
+                )
+                return redirect('parameters')
+            messages.error(request, 'Please correct the errors below.')
+
         if 'change_password' in request.POST:
             password_form = MyPasswordChangeForm(request.user, request.POST)
             if password_form.is_valid():
@@ -122,6 +145,7 @@ def parameters_view(request):
         if 'change_email' in request.POST:
             email_form = EmailChangeForm(
                 request.POST,
+                user=request.user,
                 initial={'current_email': request.user.email}
             )
             if email_form.is_valid():
@@ -154,6 +178,7 @@ def parameters_view(request):
         'authentication/parameters.html',
         context={
             'password_form': password_form,
+            'username_form': username_form,
             'email_form': email_form,
             'delete_form': delete_form,
             'image_form': image_form,

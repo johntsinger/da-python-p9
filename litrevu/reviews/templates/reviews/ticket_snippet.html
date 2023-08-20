@@ -1,5 +1,5 @@
 {% with ticket.review_set.get as review %}
-<article class="rounded-3 border px-4 my-4" style="background-color: #f0f2f5">
+<article class="rounded-3 border px-4 my-4" style="background-color: {{ color }};">
     {% if review %}
         <header class="d-flex align-items-center my-2 border-bottom">
             <div class="d-flex align-items-center my-2">
@@ -40,6 +40,11 @@
                     <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">{{ ticket.user }}</a>
                     <small class="text-secondary">{{ ticket.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
+            </div>
+             <div class="ms-auto">
+                <a class="text-success me-2" type="button" href="{% url 'change-ticket' ticket.id %}">Update</a>
+                <a class="text-danger me-2" type="button" href="#" data-bs-toggle="modal" data-bs-target="#ticket-delete">Delete</a>
+                {% include 'includes/modal.html' with modal_id='ticket-delete' modal_title='Delete your ticket' modal_context_data=ticket.title form=ticket_confirm_delete modal_input_value="Delete this ticket" %}
             </div>
         </header>
         <section class="mx-2 mb-4 d-flex flex-column">

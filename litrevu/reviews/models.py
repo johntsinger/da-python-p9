@@ -18,7 +18,7 @@ class Ticket(models.Model):
     )
     image = models.ImageField(
         upload_to=images_path,
-        verbose_name='Profile Image',
+        verbose_name='Image',
         null=True,
         blank=True,
     )
@@ -45,7 +45,7 @@ class Review(models.Model):
     headline = models.CharField(
         max_length=128,
     )
-    body = models.CharField(
+    body = models.TextField(
         max_length=8192,
         blank=True,
     )
@@ -79,4 +79,4 @@ class UserFollows(models.Model):
         unique_together = ('user', 'followed_user', )
 
     def __str__(self):
-        return f'{self.user} --> {self.followed_user}'
+        return f'{self.user} follows {self.followed_user}'
