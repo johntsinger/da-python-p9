@@ -10,12 +10,13 @@
                     <a class="me-2 text-decoration-none" href="{% url 'user-posts' review.user.id %}">{{ review.user }}</a>
                     <small class="text-secondary">{{ review.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
+                <h6 class="ms-4 mb-0"><span class="badge text-bg-success">Review</span></h6>
             </div>
             {% if 'create' not in request.get_full_path %}
                 {% if user == review.user %}
                  <div class="ms-auto">
-                    <a class="text-success me-2" type="button" href="{% url 'change-review' review.id %}">Update</a>
-                    <a class="text-danger me-2" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.id }}">Delete</a>
+                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}">Update</a>
+                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=review.id modal_title='Delete your review' modal_context_data=review.headline action="delete-review" object_id=review.id form='reviews/review_confirm_delete.html' object=review modal_button_value="Delete this review" %}
                 </div>
                 {% endif %}
@@ -26,13 +27,7 @@
                 <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
                     <h2 class="mx-auto">{{ review.headline|capfirst }}</h2>
                 </a>
-                <p class="star-rating-{{ review.rating }}" id="stars">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                </p>
+                <h2><span class="mx-4">-</span>Rating : {{ review.rating }}</h2>
             </div>
             <div class="d-flex flex-column flex-lg-row align-items-center">
                 <p class="col p-2">{{ review.body|capfirst }}</p>
@@ -49,12 +44,13 @@
                     <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">{{ ticket.user }}</a>
                     <small class="text-secondary">{{ ticket.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
+                <h6 class="ms-4 mb-0"><span class="badge text-bg-primary">Ticket</span></h6>
             </div>
             {% if 'create' not in request.get_full_path %}
                 {% if user == ticket.user %}
                  <div class="ms-auto">
-                    <a class="text-success me-2" type="button" href="{% url 'change-ticket' ticket.id %}">Update</a>
-                    <a class="text-danger me-2" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.id }}">Delete</a>
+                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}">Update</a>
+                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
                 </div>
                 {% endif %}

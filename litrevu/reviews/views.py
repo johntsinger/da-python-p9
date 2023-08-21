@@ -9,7 +9,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from reviews.forms import TicketForm, DeleteTicketForm
+from reviews.forms import TicketForm, ReviewForm, DeleteTicketForm
 from reviews.models import Ticket, Review
 
 
@@ -17,9 +17,12 @@ class IndexView(LoginRequiredMixin, ListView):
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
+        print('user tickets : ', Ticket.objects.filter(user=self.request.user))
         tickets = Ticket.objects.filter(
             # current user tickets
             Q(user=self.request.user)
+            # current user reviews
+            | Q(review__user=self.request.user)
             # tickets from users followed by the current user
             | Q(user_id__in=self.request.user.following.values_list(
                 "followed_user", flat=True))
@@ -97,14 +100,13 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
 
 class TicketDeleteView(TicketBaseView, DeleteView):
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        messages.success(
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        messages.warning(
             self.request,
             'Your ticket has been sucessfully deleted !'
         )
-
-        return response
+        return super().form_valid(form)
 
 
 class ReviewBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
@@ -128,12 +130,15 @@ class ReviewCreateView(ReviewBaseView, CreateView):
             self.request.FILES or None,
             instance=ticket
         )
+        context['form'] = ReviewForm(
+            self.request.POST or None
+        )
 
         print(context)
         return context
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
+        form = self.get_form(ReviewForm)
         ticket_form = None
         if not self.kwargs:
             ticket_form = self.get_form(TicketForm)
@@ -176,13 +181,21 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
     template_name = 'reviews/review_change.html'
     success_message = 'Your review has been successfully updated !'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ReviewForm(
+            self.request.POST or None,
+            instance=Review.objects.get(pk=self.kwargs['pk'])
+        )
+        return context
+
 
 class ReviewDeleteView(ReviewBaseView, DeleteView):
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        messages.success(
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        messages.warning(
             self.request,
             'Your review has been sucessfully deleted !'
         )
-
-        return response
+        return super().form_valid(form)
