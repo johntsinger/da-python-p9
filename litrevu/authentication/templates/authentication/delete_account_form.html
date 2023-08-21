@@ -4,7 +4,7 @@
     <p><strong class="text-danger">You will lose everything !</strong></p>
     <p><strong class="text-danger">All content relating to you will be deleted !</strong></p>
 </div>
-{% for field in form %}
+{% for field in object %}
     <div class="fieldWrapper">
         {{ field.errors }}
         {{ field|as_crispy_field }}

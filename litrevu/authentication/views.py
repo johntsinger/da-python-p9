@@ -163,7 +163,7 @@ def parameters_view(request):
             delete_form = DeleteAccountForm(request.POST)
             if delete_form.is_valid():
                 user = authenticate(
-                    username=delete_form.cleaned_data['username'],
+                    email=delete_form.cleaned_data['email'],
                     password=delete_form.cleaned_data['password'],
                 )
                 if user is not None:

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="mx-auto col-md-8 col-lg-6 rounded-3 border px-4" style="background-color: #f0f2f5;">
+        <legend class="border-bottom py-2 px-2">
+            Update Review
+        </legend>
+        <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <p class="help">{{ field.help_text|safe }}</p>
+            <div class="vstack gap-4 pb-4 my-4 d-flex flex-column">
+                <button class="btn btn-primary" type="submit">Send</button>
+                <a class="btn btn-secondary" href="{% url 'feed' %}" role="button">Return</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

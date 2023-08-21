@@ -2,14 +2,14 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.db.models import Q, Case, When
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from reviews.forms import TicketForm
+from reviews.forms import TicketForm, DeleteTicketForm
 from reviews.models import Ticket, Review
 
 
@@ -39,7 +39,9 @@ class IndexView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print('Context IndexView', context)
+        form = DeleteTicketForm()
+        context['form'] = form
+        print(context)
 
         return context
 
@@ -95,25 +97,6 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
 
 class TicketDeleteView(TicketBaseView, DeleteView):
-    template_name = 'reviews/ticket_confirm_delete.html'
-
-    def post(self, request, *args, **kwargs):
-        # Set self.object before the usual form processing flow.
-        # Inlined because having DeletionMixin as the first base, for
-        # get_success_url(), makes leveraging super() with ProcessFormView
-        # overly complex.
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        success_url = self.get_success_url()
-        self.object.delete()
-        return HttpResponseRedirect(success_url)
-
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         messages.success(
@@ -146,6 +129,7 @@ class ReviewCreateView(ReviewBaseView, CreateView):
             instance=ticket
         )
 
+        print(context)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -153,10 +137,9 @@ class ReviewCreateView(ReviewBaseView, CreateView):
         ticket_form = None
         if not self.kwargs:
             ticket_form = self.get_form(TicketForm)
-
-        if ticket_form and (form.is_valid() and ticket_form.is_valid()):
+        if not self.kwargs and (form.is_valid() and ticket_form.is_valid()):
             return self.form_valid(form, ticket_form)
-        elif not ticket_form and form.is_valid():
+        elif self.kwargs and form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
@@ -179,6 +162,9 @@ class ReviewCreateView(ReviewBaseView, CreateView):
 
     def form_invalid(self, form):
         self.object = None
+        messages.error(
+            self.request,
+            "Please correct the errors below !")
         return self.render_to_response(
             self.get_context_data(
                 form=form

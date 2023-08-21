@@ -7,7 +7,7 @@
     </div>
     <div class="container">
         {% for ticket in ticket_list %}
-            {% include 'reviews/ticket_snippet.html' with color='#f0f2f5' %}
+            {% include 'reviews/ticket_snippet.html' with color='#f0f2f5' ticket=ticket %}
         {% endfor %}
     </div>
 {% endblock content %}

@@ -7,7 +7,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('headline', 'user', 'ticket', 'rating', 'body')
+    list_display = ('headline', 'user', 'ticket', 'rating')
 
 
 class UserFollowAdmin(admin.ModelAdmin):

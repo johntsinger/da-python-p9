@@ -1,1 +1,4 @@
-<p>are you sure you want to delete the ticket : <strong class="text-danger">{{ ticket.title }}</strong> ?</p>
+<p>Are you sure you want to delete the ticket : <strong class="text-danger">{{ object|capfirst }}</strong> ?</p>
+{% if ticket.review_set.first %}
+<p>The review <strong class="text-danger">{{ object.review_set.first.headline|capfirst }}</strong> created by <strong class="text-primary">{% if object.review_set.first.user == user %}You{% else %}{{ object.review_set.first.user|capfirst }}{% endif %}</strong> will also be deleted !</p>
+{% endif %}

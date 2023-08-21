@@ -60,7 +60,7 @@
             <!-- Modal -->
             <div class="mx-0 mx-md-4 pt-2 d-flex flex-column">
                 <a class="btn btn-danger mb-4" href="#" data-bs-toggle="modal" data-bs-target="#account-delete">I want to delete my account</a>
-                {% include 'includes/modal.html' with modal_id='account-delete' modal_title='Delete your account' form=delete_form modal_input_value="Yes I'm sure, delete everything" modal_input_name='delete-account' %}
+                {% include 'includes/modal.html' with modal_id='account-delete' modal_title='Delete your account' form='authentication/delete_account_form.html' object=delete_form modal_button_value="Yes I'm sure, delete everything" %}
             </div>
         </div>
     </div>

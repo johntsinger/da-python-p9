@@ -12,3 +12,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('headline', 'rating', 'body')
+
+
+class DeleteTicketForm(forms.Form):
+    template_name = 'reviews/ticket_confirm_delete.html'

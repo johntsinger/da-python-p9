@@ -101,8 +101,7 @@ class DeleteAccountForm(forms.Form):
         widget=forms.HiddenInput,
         initial=True,
     )
-    username = forms.CharField(
-        max_length=63)
+    email = forms.EmailField()
     password = forms.CharField(
         max_length=63,
         widget=forms.PasswordInput

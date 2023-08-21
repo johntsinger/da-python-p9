@@ -18,4 +18,8 @@ urlpatterns = [
     # to create review for an existing ticket
     path('reviews/review/create/<int:pk>', re_views.ReviewCreateView.as_view(),
          name='create-review'),
+    path('reviews/review/<int:pk>/change', re_views.ReviewUpdateView.as_view(),
+         name='change-review'),
+    path('reviews/review/<int:pk>/delete', re_views.ReviewDeleteView.as_view(),
+         name='delete-review'),
 ]
