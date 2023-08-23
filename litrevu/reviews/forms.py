@@ -6,6 +6,11 @@ from reviews.models import Ticket, Review, UserFollows
 
 
 class TicketForm(forms.ModelForm):
+    class Media:
+        js = (
+            'reviews/js/change_image.js',
+        )
+
     class Meta:
         model = Ticket
         fields = ('title', 'description', 'image')
@@ -33,6 +38,7 @@ class ReviewForm(forms.ModelForm):
         fields = ('headline', 'rating', 'body')
 
     def __init__(self, *args, **kwargs):
+        """Add FormHelper to make RadioSelect inline"""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -46,27 +52,8 @@ class ReviewForm(forms.ModelForm):
             ),
             Field('body'),
             Div(
-                Div(
-                    HTML(
-                        """
-                        <a class="btn btn-secondary w-100"
-                        href="{% url 'feed' %}"
-                        role="button">Return</a>
-                        """
-                    ),
-                    css_class="col-md-6 pe-md-3"
-                ),
-                Div(
-                    Submit(
-                        'submit',
-                        'Send',
-                        css_class="btn btn-primary w-100"
-                    ),
-                    css_class="col-md-6 ps-md-3"
-                ),
-                css_class=(
-                    "vstack gap-4 gap-md-0 my-4 py-4 d-flex flex-column"
-                    " flex-md-row"
+                HTML(
+                    "{% include 'reviews/submit_buttons_form.html' %}"
                 )
             )
         )
