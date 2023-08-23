@@ -10,7 +10,6 @@
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
             {% csrf_token %}
             {% crispy form %}
-            <p class="help">{{ field.help_text|safe }}</p>
             <!-- Butons created in form by crispy-form -->
         </form>
     </div>

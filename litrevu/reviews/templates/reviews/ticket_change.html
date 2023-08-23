@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -9,16 +11,10 @@
         </legend>
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
             {% csrf_token %}
+            {{ form.media }}
             {{ form|crispy }}
-            <p class="help">{{ field.help_text|safe }}</p>
-            <div class="vstack gap-4 gap-md-0 my-4 py-4 d-flex flex-column flex-md-row">
-                <div class="col-md-6 pe-md-3">
-                    <a class="btn btn-secondary w-100" href="{% url 'feed' %}" role="button">Return</a>
-                </div>
-                <div class="col-md-6 ps-md-3">
-                    <button class="btn btn-primary w-100" type="submit">Send</button>
-                </div>
-            </div>
+            {% include 'reviews/image_preview.html' %}
+            {% include 'reviews/submit_buttons_form.html' %}
         </form>
     </div>
 {% endblock %}

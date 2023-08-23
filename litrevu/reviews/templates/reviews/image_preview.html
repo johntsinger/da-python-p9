@@ -1,0 +1,13 @@
+<div class="d-flex flex-column align-items-center flex-md-row justify-content-md-around">
+    {% if ticket.image %}
+    <div class="d-flex flex-column align-items-center gap-2 rounded mb-4 mb-md-0">
+            <label>Current Image</label>
+            <img class="img-thumbnail" width="150px" height="auto" src="{{ ticket.image.url }}">
+        
+    </div>
+    {% endif %}
+    <div id=selected-image class="d-flex flex-column align-items-center gap-2 rounded d-none">
+        <label>Selected Image</label>
+        <img id="image" class="img-thumbnail" width='150px' height="auto" src="">
+    </div>
+</div>
