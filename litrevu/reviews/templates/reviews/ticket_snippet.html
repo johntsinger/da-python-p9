@@ -1,4 +1,3 @@
-{% with ticket.review_set.get as review %}
 <article class="rounded-3 border px-4 my-4" style="background-color: {{ color }};">
     {% if review %}
         <header class="d-flex align-items-center my-2 border-bottom">
@@ -16,7 +15,7 @@
                 {% if user == review.user %}
                  <div class="ms-auto">
                     <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}">Update</a>
-                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.id }}">Delete</a>
+                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.time_created|date:'U' }}{{ review.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=review.id modal_title='Delete your review' modal_context_data=review.headline action="delete-review" object_id=review.id form='reviews/review_confirm_delete.html' object=review modal_button_value="Delete this review" %}
                 </div>
                 {% endif %}
@@ -50,7 +49,7 @@
                 {% if user == ticket.user %}
                  <div class="ms-auto">
                     <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}">Update</a>
-                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.id }}">Delete</a>
+                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
                 </div>
                 {% endif %}
@@ -78,4 +77,3 @@
         </section>
     {% if review %}</article>{% endif %}
 </article>
-{% endwith %}
