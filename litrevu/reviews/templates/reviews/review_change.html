@@ -9,12 +9,9 @@
         </legend>
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
             {% csrf_token %}
-            {{ form|crispy }}
+            {% crispy form %}
             <p class="help">{{ field.help_text|safe }}</p>
-            <div class="vstack gap-4 pb-4 my-4 py-4 d-flex flex-column flex-md-row">
-                <a class="btn btn-secondary col-md-6" href="{% url 'feed' %}" role="button">Return</a>
-                <button class="btn btn-primary col-md-6" type="submit">Send</button>
-            </div>
+            <!-- Butons created in form by crispy-form -->
         </form>
     </div>
 {% endblock %}

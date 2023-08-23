@@ -10,14 +10,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from reviews.forms import TicketForm, ReviewForm, DeleteTicketForm
-from reviews.models import Ticket, Review
+from reviews.models import Ticket, Review, UserFollows
 
 
 class IndexView(LoginRequiredMixin, ListView):
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
-        print('user tickets : ', Ticket.objects.filter(user=self.request.user))
         tickets = Ticket.objects.filter(
             # current user tickets
             Q(user=self.request.user)
@@ -44,7 +43,6 @@ class IndexView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         form = DeleteTicketForm()
         context['form'] = form
-        print(context)
 
         return context
 
@@ -66,12 +64,6 @@ class UserPostView(LoginRequiredMixin, ListView):
         ).order_by("-date")
 
         return tickets
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        print(context)
-
-        return context
 
 
 class TicketBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
@@ -134,7 +126,6 @@ class ReviewCreateView(ReviewBaseView, CreateView):
             self.request.POST or None
         )
 
-        print(context)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -199,3 +190,13 @@ class ReviewDeleteView(ReviewBaseView, DeleteView):
             'Your review has been sucessfully deleted !'
         )
         return super().form_valid(form)
+
+
+class SubscriptionBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
+    model = UserFollows
+    fields = ('followed_user')
+    success_url = reverse_lazy('subscriptions')
+
+
+class SubscriptionCreateView(SubscriptionBaseView, CreateView):
+    pass
