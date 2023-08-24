@@ -8,7 +8,7 @@ from reviews.models import Ticket, Review, UserFollows
 class TicketForm(forms.ModelForm):
     class Media:
         js = (
-            'reviews/js/change_image.js',
+            'js/change_image.js',
         )
 
     class Meta:
@@ -53,7 +53,7 @@ class ReviewForm(forms.ModelForm):
             Field('body'),
             Div(
                 HTML(
-                    "{% include 'reviews/submit_buttons_form.html' %}"
+                    "{% include 'reviews/includes/submit_buttons_form.html' %}"
                 )
             )
         )

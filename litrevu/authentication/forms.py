@@ -30,6 +30,11 @@ class ImageChangeForm(forms.ModelForm):
         required=False,
     )
 
+    class Media:
+        js = (
+            'js/change_image.js',
+        )
+
     class Meta:
         model = UserProfile
         fields = ('image',)

@@ -9,12 +9,12 @@
             {% if ticket %} Ticket {% else %} Create Ticket {% endif %}
             </legend>
             {% if ticket %}
-                {% include 'reviews/ticket_snippet.html' with color='#fff' %}
+                {% include 'reviews/includes/ticket_snippet.html' with color='#fff' %}
             {% else %}
                 {% csrf_token %}
                 {{ ticket_form.media }}
                 {{ ticket_form|crispy }}
-                {% include 'reviews/image_preview.html' %}
+                {% include 'includes/image_preview.html' with object=ticket %}
             {% endif %}
             <legend class="border-bottom py-2 px-2">
             Create Review

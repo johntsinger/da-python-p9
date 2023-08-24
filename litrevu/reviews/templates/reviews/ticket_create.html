@@ -11,8 +11,8 @@
             {% csrf_token %}
             {{ form.media }}
             {{ form|crispy }}
-            {% include 'reviews/image_preview.html' %}
-            {% include 'reviews/submit_buttons_form.html' %}
+            {% include 'includes/image_preview.html' with object=ticket %}
+            {% include 'reviews/includes/submit_buttons_form.html' %}
         </form>
     </div>
 {% endblock %}

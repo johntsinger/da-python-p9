@@ -7,9 +7,9 @@
     </div>
     <div class="container">
         {% for ticket in ticket_list %}
-            {% include 'reviews/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}
+            {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}
             {% if 'user-post' in request.get_full_path and ticket.user == ticket.review_set.get.user %}
-                {% include 'reviews/ticket_snippet.html' with color='#f0f2f5' ticket=ticket %}
+                {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket %}
             {% endif %}
         {% endfor %}
     </div>
