@@ -9,7 +9,12 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from reviews.forms import TicketForm, ReviewForm, DeleteTicketForm
+from reviews.forms import (
+    TicketForm,
+    ReviewForm,
+    DeleteTicketForm,
+    SubscriptionCreateFrom,
+)
 from reviews.models import Ticket, Review, UserFollows
 
 
@@ -213,9 +218,22 @@ class ReviewDeleteView(ReviewBaseView, DeleteView):
 
 class SubscriptionBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     model = UserFollows
-    fields = ('followed_user')
+    fields = ('followed_user',)
     success_url = reverse_lazy('subscriptions')
 
 
 class SubscriptionCreateView(SubscriptionBaseView, CreateView):
-    pass
+    template_name = 'reviews/subscriptions.html'
+    success_message = 'You are now follow user :'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SubscriptionCreateFrom(
+            self.request.POST or None,
+        )
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+
+        return super().form_valid(form)

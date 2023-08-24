@@ -13,7 +13,7 @@
                 {% if user.is_authenticated %}
                 <a class="nav-link {% block active-feed %}{% endblock active-feed %}" href="{% url 'feed' %}">Feed</a>
                 <a class="nav-link {% block active-posts %}{% endblock active-posts %}" href="{% url 'user-posts' user.id %}">Posts</a>
-                <a class="nav-link {% block active-sub %}{% endblock active-sub %}" href="#">Subscriptions</a>
+                <a class="nav-link {% block active-sub %}{% endblock active-sub %}" href="{% url 'subscriptions' %}">Subscriptions</a>
                 {% endif %}
             </div>
             <div class="navbar-nav">

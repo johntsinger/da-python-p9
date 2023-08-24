@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div, HTML
-from crispy_forms.bootstrap import InlineRadios
+from crispy_forms.layout import Layout, Field, Div, HTML, Submit
+from crispy_forms.bootstrap import InlineRadios, FieldWithButtons
 from django import forms
 from reviews.models import Ticket, Review, UserFollows
 
@@ -63,7 +63,27 @@ class DeleteTicketForm(forms.Form):
     template_name = 'reviews/ticket_confirm_delete.html'
 
 
-class SubscriptionFrom(forms.ModelForm):
+class SubscriptionCreateFrom(forms.ModelForm):
+    followed_user = forms.CharField(
+        label=False,
+        widget=forms.TextInput,
+        required=False
+    )
+
     class Meta:
         model = UserFollows
         fields = ('followed_user',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            FieldWithButtons(
+                'followed_user',
+                Submit(
+                    'submit',
+                    'Follow'
+                ),
+                input_size="input-group-sm",
+            )
+        )

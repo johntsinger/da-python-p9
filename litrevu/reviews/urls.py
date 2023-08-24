@@ -22,4 +22,6 @@ urlpatterns = [
          name='change-review'),
     path('reviews/review/<int:pk>/delete', re_views.ReviewDeleteView.as_view(),
          name='delete-review'),
+    path('reviews/subscriptions/', re_views.SubscriptionCreateView.as_view(),
+         name='subscriptions')
 ]
