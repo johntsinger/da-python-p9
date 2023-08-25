@@ -1,6 +1,9 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Div, HTML, Submit
 from crispy_forms.bootstrap import InlineRadios, FieldWithButtons
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django import forms
 from reviews.models import Ticket, Review, UserFollows
 
@@ -63,23 +66,23 @@ class DeleteTicketForm(forms.Form):
     template_name = 'reviews/ticket_confirm_delete.html'
 
 
-class SubscriptionCreateFrom(forms.ModelForm):
-    followed_user = forms.CharField(
+class SubscriptionFrom(forms.ModelForm):
+    username = forms.CharField(
         label=False,
         widget=forms.TextInput,
-        required=False
     )
 
     class Meta:
         model = UserFollows
-        fields = ('followed_user',)
+        fields = ('username',)
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             FieldWithButtons(
-                'followed_user',
+                'username',
                 Submit(
                     'submit',
                     'Follow'
@@ -87,3 +90,35 @@ class SubscriptionCreateFrom(forms.ModelForm):
                 input_size="input-group-sm",
             )
         )
+
+    def clean_username(self):
+        User = get_user_model()
+        try:
+            followed_user = User.objects.get(
+                username=self.cleaned_data['username']
+            )
+        except User.DoesNotExist:
+            messages.error(
+                self.request,
+                'This user does not exist'
+            )
+            raise ValidationError('This user does not exist')
+        else:
+            if followed_user == self.request.user:
+                messages.error(
+                    self.request,
+                    "You can't follow yourself !"
+                )
+                raise ValidationError("You can't follow yourself !")
+            elif followed_user.id in self.request.user.following.values_list(
+                'followed_user',
+                flat=True
+            ):
+                messages.error(
+                    self.request,
+                    f'You are already following {followed_user}')
+                raise ValidationError(
+                    f'You are already following {followed_user}'
+                )
+
+        return followed_user

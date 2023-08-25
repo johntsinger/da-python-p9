@@ -5,6 +5,9 @@
         <a href="{% url 'create-ticket' %}" class="btn btn-primary mb-4 mb-md-0 mx-2" role="button">New ticket</a>
         <a href="{% url 'create-review' %}" class="btn btn-primary mx-2" role="button">New review</a>
     </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% include 'reviews/includes/pagination.html' %}
+    {% endif %}
     <div class="container">
         {% for ticket in ticket_list %}
             {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}

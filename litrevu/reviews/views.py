@@ -13,12 +13,13 @@ from reviews.forms import (
     TicketForm,
     ReviewForm,
     DeleteTicketForm,
-    SubscriptionCreateFrom,
+    SubscriptionFrom,
 )
 from reviews.models import Ticket, Review, UserFollows
 
 
 class IndexView(LoginRequiredMixin, ListView):
+    paginate_by = 5
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
@@ -218,7 +219,7 @@ class ReviewDeleteView(ReviewBaseView, DeleteView):
 
 class SubscriptionBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     model = UserFollows
-    fields = ('followed_user',)
+    form_class = SubscriptionFrom
     success_url = reverse_lazy('subscriptions')
 
 
@@ -226,14 +227,13 @@ class SubscriptionCreateView(SubscriptionBaseView, CreateView):
     template_name = 'reviews/subscriptions.html'
     success_message = 'You are now follow user :'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = SubscriptionCreateFrom(
-            self.request.POST or None,
-        )
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"request": self.request})
+        return kwargs
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
+        followed_user = form.cleaned_data['username']
+        form.instance.followed_user = followed_user
         return super().form_valid(form)
