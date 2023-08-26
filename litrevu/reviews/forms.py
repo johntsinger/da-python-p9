@@ -69,7 +69,12 @@ class DeleteTicketForm(forms.Form):
 class SubscriptionFrom(forms.ModelForm):
     username = forms.CharField(
         label=False,
-        widget=forms.TextInput,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':
+                    'Enter the username of the user you wish to follow'
+            }
+        ),
     )
 
     class Meta:
@@ -77,7 +82,8 @@ class SubscriptionFrom(forms.ModelForm):
         fields = ('username',)
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request')
+        if kwargs.get('request'):
+            self.request = kwargs.pop('request')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

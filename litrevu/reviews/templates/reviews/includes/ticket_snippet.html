@@ -1,6 +1,6 @@
 <article class="rounded-3 border px-4 my-4" style="background-color: {{ color }};">
     {% if review %}
-        <header class="d-flex align-items-center my-2 border-bottom">
+        <header class="d-flex flex-column flex-md-row align-items-center my-2 border-bottom">
             <div class="d-flex align-items-center my-2">
                 <div class="flex-shrink-0">
                     <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ review.user.userprofile.image.url }}" alt="{{ review.user }} profile image">
@@ -9,12 +9,12 @@
                     <a class="me-2 text-decoration-none" href="{% url 'user-posts' review.user.id %}">{{ review.user }}</a>
                     <small class="text-secondary">{{ review.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
-                <h6 class="ms-4 mb-0"><span class="badge text-bg-success">Review</span></h6>
+                <h6 class="ms-4 mb-0"><span class="badge  text-bg-success">Review</span></h6>
             </div>
             {% if 'create' not in request.get_full_path %}
                 {% if user == review.user %}
-                 <div class="ms-auto">
-                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}">Update</a>
+                 <div class="ms-md-auto">
+                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}?page={{ page_obj.number }}">Update</a>
                     <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.time_created|date:'U' }}{{ review.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=review.id modal_title='Delete your review' modal_context_data=review.headline action="delete-review" object_id=review.id form='reviews/review_confirm_delete.html' object=review modal_button_value="Delete this review" %}
                 </div>
@@ -34,7 +34,7 @@
         </section>
         <article class="container border rounded-3 px-4 my-4" style="background-color: #fff">
     {% endif %}
-        <header class="d-flex align-items-center my-2 border-bottom">
+        <header class="d-flex flex-column flex-md-row align-items-center my-2 border-bottom">
             <div class="d-flex align-items-center my-2">
                 <div class="flex-shrink-0">
                     <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ ticket.user.userprofile.image.url }}" alt="{{ ticket.user }} profile image">
@@ -47,8 +47,8 @@
             </div>
             {% if 'create' not in request.get_full_path %}
                 {% if user == ticket.user %}
-                 <div class="ms-auto">
-                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}">Update</a>
+                 <div class="ms-md-auto">
+                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
                     <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
                 </div>
@@ -71,7 +71,7 @@
             </div>
             {% if not review and 'create' not in request.get_full_path %}
             <div class="d-flex justify-content-end">
-                <a class="btn btn-primary" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
+                <a class="btn btn-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
             </div>
             {% endif %}
         </section>

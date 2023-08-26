@@ -7,15 +7,20 @@ from django.db.models import Q, Case, When
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    ModelFormMixin
+)
 from django.urls import reverse_lazy
 from reviews.forms import (
     TicketForm,
     ReviewForm,
-    DeleteTicketForm,
     SubscriptionFrom,
 )
 from reviews.models import Ticket, Review, UserFollows
+from utils.mixins import SuccessDeleteMessageMixin
 
 
 class IndexView(LoginRequiredMixin, ListView):
@@ -45,15 +50,18 @@ class IndexView(LoginRequiredMixin, ListView):
 
         return tickets
 
+    """
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         form = DeleteTicketForm()
         context['form'] = form
 
         return context
+    """
 
 
 class UserPostView(LoginRequiredMixin, ListView):
+    paginate_by = 5
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
@@ -113,7 +121,15 @@ class TicketUpdateView(TicketBaseView, UpdateView):
             self.request.POST or None,
             instance=Ticket.objects.get(pk=self.kwargs['pk'])
         )
+        if 'page' in self.request.GET:
+            context['page'] = self.request.GET['page']
+
         return context
+
+    def get_success_url(self):
+        if 'page' in self.request.GET:
+            self.success_url += f'?page={self.request.GET["page"]}'
+        return str(self.success_url)
 
 
 class TicketDeleteView(TicketBaseView, DeleteView):
@@ -203,7 +219,16 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
             self.request.POST or None,
             instance=Review.objects.get(pk=self.kwargs['pk'])
         )
+
+        if 'page' in self.request.GET:
+            context['page'] = self.request.GET['page']
+
         return context
+
+    def get_success_url(self):
+        if 'page' in self.request.GET:
+            self.success_url += f'?page={self.request.GET["page"]}'
+        return str(self.success_url)
 
 
 class ReviewDeleteView(ReviewBaseView, DeleteView):
@@ -223,9 +248,14 @@ class SubscriptionBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     success_url = reverse_lazy('subscriptions')
 
 
-class SubscriptionCreateView(SubscriptionBaseView, CreateView):
+class SubscriptionView(SubscriptionBaseView, ListView, ModelFormMixin):
     template_name = 'reviews/subscriptions.html'
-    success_message = 'You are now follow user :'
+    success_message = 'You are now follow user %(username)s'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        self.form = self.get_form(self.form_class)
+        return super().get(self, request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -237,3 +267,24 @@ class SubscriptionCreateView(SubscriptionBaseView, CreateView):
         followed_user = form.cleaned_data['username']
         form.instance.followed_user = followed_user
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        self.form = self.get_form(self.form_class)
+
+        if self.form.is_valid():
+            self.object = self.form
+            return self.form_valid(self.form)
+
+        return self.get(request, *args, **kwargs)
+
+
+class UserfollowDeleteView(SubscriptionBaseView, DeleteView):
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        messages.warning(
+            self.request,
+            f'You no longer follow {self.object.followed_user}'
+        )
+        return self.delete(request, *args, **kwargs)

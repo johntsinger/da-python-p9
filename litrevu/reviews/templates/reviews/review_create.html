@@ -4,10 +4,10 @@
 
 {% block content %}
     <div class="container rounded-3 border px-4" style="background-color: #f0f2f5;">
-        <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
-            <legend class="border-bottom py-2 px-2">
+        <legend class="border-bottom py-2 px-2">
             {% if ticket %} Ticket {% else %} Create Ticket {% endif %}
-            </legend>
+        </legend>
+        <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
             {% if ticket %}
                 {% include 'reviews/includes/ticket_snippet.html' with color='#fff' %}
             {% else %}
@@ -16,7 +16,7 @@
                 {{ ticket_form|crispy }}
                 {% include 'includes/image_preview.html' with object=ticket %}
             {% endif %}
-            <legend class="border-bottom py-2 px-2">
+            <legend class="border-bottom py-2">
             Create Review
             </legend>
             {% crispy form %}
