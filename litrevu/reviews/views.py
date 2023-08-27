@@ -20,7 +20,6 @@ from reviews.forms import (
     SubscriptionFrom,
 )
 from reviews.models import Ticket, Review, UserFollows
-from utils.mixins import SuccessDeleteMessageMixin
 
 
 class IndexView(LoginRequiredMixin, ListView):

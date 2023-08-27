@@ -1,5 +1,7 @@
 {% extends 'base.html'%}
 
+{% load custom_filters %}
+
 {% block content %}
     <div class="d-flex flex-column flex-md-row justify-content-md-end mb-4">
         <a href="{% url 'create-ticket' %}" class="btn btn-primary mb-4 mb-md-0 mx-2" role="button">New ticket</a>
