@@ -1,6 +1,18 @@
 {% extends 'base.html'%}
 
-{% load custom_filters %}
+{% block h1 %}
+    {% if 'user-post' in request.get_full_path %}
+        {% with ticket_list.first.user as user %}
+            {% if user == request.user %}
+                Your tickets and reviews
+            {% else %}
+                Tickets and reviews by {{ user }}
+            {% endif %}
+        {% endwith %}
+    {% else %}
+        Feed
+    {% endif %}
+{% endblock h1 %}
 
 {% block content %}
     <div class="d-flex flex-column flex-md-row justify-content-md-end mb-4">

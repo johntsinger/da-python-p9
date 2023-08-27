@@ -41,9 +41,11 @@
                     {% endfor %}
                 </div>
             </div>
+            {% if review.body %}
             <div class="d-flex flex-column flex-lg-row align-items-center">
                 <p class="col p-2">{{ review.body|capfirst }}</p>
             </div>
+            {% endif %}
         </section>
         <article class="container border rounded-3 px-4 my-4" style="background-color: #fff">
     {% endif %}
@@ -62,13 +64,13 @@
                     <h6 class="ms-md-4 mb-0"><span class="badge text-bg-primary">Ticket</span></h6>
                 </div>
                 {% if 'create' not in request.get_full_path %}
-                {% if user == ticket.user %}
-                 <div class="d-flex justify-content-end gap-2">
-                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
-                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
-                    {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
-                </div>
-                {% endif %}
+                    {% if user == ticket.user %}
+                     <div class="d-flex justify-content-end gap-2">
+                        <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
+                        <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
+                        {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
+                    </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </header>
@@ -84,7 +86,9 @@
                     <img class="img-thumbnail float-left" width='150px' height="auto" src="{{ ticket.image.url }}" alt="{{ ticket.title }} image">
                 </div>
                 {% endif %}
+                {% if ticket.description %}
                 <p class="col p-2">{{ ticket.description|capfirst }}</p>
+                {% endif %}
             </div>
             {% if not review and 'create' not in request.get_full_path %}
             <div class="d-flex justify-content-center justify-content-md-end">
@@ -94,29 +98,3 @@
         </section>
     {% if review %}</article>{% endif %}
 </article>
-
-
-
-<!--
-<header class="d-flex flex-column flex-md-row align-items-center my-2 border-bottom">
-    <div class="d-flex align-items-center my-2">
-        <div class="flex-shrink-0">
-            <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ ticket.user.userprofile.image.url }}" alt="{{ ticket.user }} profile image">
-        </div>
-        <div class="flex-grow-1 ms-3">
-            <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">{{ ticket.user }}</a>
-            <small class="text-secondary">{{ ticket.time_created|date:"H:i, M d, Y" }}</small>
-        </div>
-        <h6 class="ms-4 mb-0"><span class="badge text-bg-primary">Ticket</span></h6>
-    </div>
-    {% if 'create' not in request.get_full_path %}
-        {% if user == ticket.user %}
-         <div class="ms-md-auto">
-            <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
-            <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
-            {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
-        </div>
-        {% endif %}
-    {% endif %}
-</header>
--->

@@ -3,7 +3,7 @@ from reviews import views as re_views
 
 urlpatterns = [
     path('', re_views.IndexView.as_view(), name='feed'),
-    path('reviews/user-posts/<int:user_id>', re_views.UserPostView.as_view(),
+    path('reviews/user-posts/<int:pk>', re_views.UserPostView.as_view(),
          name='user-posts'),
     path('reviews/ticket/<int:pk>', re_views.TicketDetailView.as_view(),
          name='ticket-detail'),

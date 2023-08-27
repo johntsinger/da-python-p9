@@ -5,6 +5,6 @@ register = template.Library()
 
 
 @register.filter
-def list_range(item):
+def list_range(value):
     """Return a range of x number"""
-    return range(int(item))
+    return range(int(value))

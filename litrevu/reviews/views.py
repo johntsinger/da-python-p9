@@ -49,15 +49,6 @@ class IndexView(LoginRequiredMixin, ListView):
 
         return tickets
 
-    """
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = DeleteTicketForm()
-        context['form'] = form
-
-        return context
-    """
-
 
 class UserPostView(LoginRequiredMixin, ListView):
     paginate_by = 5
@@ -65,7 +56,7 @@ class UserPostView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         User = get_user_model()
-        user = User.objects.get(id=self.kwargs['user_id'])
+        user = User.objects.get(id=self.kwargs['pk'])
         tickets = (
             user.ticket_set.all()
             | Ticket.objects.filter(review__user=user)
@@ -77,6 +68,12 @@ class UserPostView(LoginRequiredMixin, ListView):
         ).order_by("-date")
 
         return tickets
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        print(self.request.GET)
+        return context
 
 
 class TicketBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
@@ -133,7 +130,6 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
 class TicketDeleteView(TicketBaseView, DeleteView):
     def form_valid(self, form):
-        """If the form is valid, save the associated model."""
         messages.warning(
             self.request,
             'Your ticket has been sucessfully deleted !'
@@ -231,9 +227,7 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
 
 
 class ReviewDeleteView(ReviewBaseView, DeleteView):
-
     def form_valid(self, form):
-        """If the form is valid, save the associated model."""
         messages.warning(
             self.request,
             'Your review has been sucessfully deleted !'
@@ -279,7 +273,6 @@ class SubscriptionView(SubscriptionBaseView, ListView, ModelFormMixin):
 
 
 class UserfollowDeleteView(SubscriptionBaseView, DeleteView):
-
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         messages.warning(

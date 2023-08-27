@@ -72,7 +72,8 @@ class SubscriptionFrom(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'placeholder':
-                    'Enter the username of the user you wish to follow'
+                    'Enter the username of the user you wish to follow',
+                'autofocus': True,
             }
         ),
     )
@@ -104,25 +105,14 @@ class SubscriptionFrom(forms.ModelForm):
                 username=self.cleaned_data['username']
             )
         except User.DoesNotExist:
-            messages.error(
-                self.request,
-                'This user does not exist'
-            )
             raise ValidationError('This user does not exist')
         else:
             if followed_user == self.request.user:
-                messages.error(
-                    self.request,
-                    "You can't follow yourself !"
-                )
                 raise ValidationError("You can't follow yourself !")
             elif followed_user.id in self.request.user.following.values_list(
                 'followed_user',
                 flat=True
             ):
-                messages.error(
-                    self.request,
-                    f'You are already following {followed_user}')
                 raise ValidationError(
                     f'You are already following {followed_user}'
                 )
