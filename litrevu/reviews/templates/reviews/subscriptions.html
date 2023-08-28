@@ -7,8 +7,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-{% with request.user.following.all as follow %}
-{% with request.user.followed_by.all as followed_by %}
+{% with user.following.all as follow %}
+{% with user.followed_by.all as followed_by %}
 <div class="container rounded-3 border px-4" style="background-color: #f0f2f5;">
     <div class="pb-4">
         <legend class="border-bottom py-2 px-2">

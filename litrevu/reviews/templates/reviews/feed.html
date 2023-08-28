@@ -2,13 +2,11 @@
 
 {% block h1 %}
     {% if 'user-post' in request.get_full_path %}
-        {% with ticket_list.first.user as user %}
-            {% if user == request.user %}
-                Your tickets and reviews
-            {% else %}
-                Tickets and reviews by {{ user }}
-            {% endif %}
-        {% endwith %}
+        {% if user_post == user %}
+            Your tickets and reviews
+        {% else %}
+            Tickets and reviews by {{ user_post }}
+        {% endif %}
     {% else %}
         Feed
     {% endif %}
@@ -16,18 +14,15 @@
 
 {% block button-follow %}
     {% if 'user-post' in request.get_full_path %}
-        {% with ticket_list.first.user as user %}
-            {{ request.user.following.followed_user }}
-            {% if user != request.user and user.pk not in followed_user_pk %}
-                <div class="container my-2 mt-4">
-                    <p class="text-center mt-2 mb-1">You don't follow user {{ user }} ! Follow him now</p>
-                    <form method="post" class="d-flex justify-content-center">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-primary">Follow</button>
-                    </form>
-                </div>
-            {% endif %}
-        {% endwith %}
+        {% if user_post != user and user_post.pk not in followed_user_pk %}
+            <div class="container my-2 mt-4">
+                <p class="text-center mt-2 mb-1">You don't follow user {{ user_post }} ! Follow him now</p>
+                <form method="post" class="d-flex justify-content-center">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary">Follow</button>
+                </form>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock button-follow %}
 

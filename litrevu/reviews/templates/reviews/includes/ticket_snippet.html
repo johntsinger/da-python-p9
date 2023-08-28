@@ -90,10 +90,21 @@
                 <p class="col p-2">{{ ticket.description|capfirst }}</p>
                 {% endif %}
             </div>
-            {% if not review and 'create' not in request.get_full_path %}
-            <div class="d-flex justify-content-center justify-content-md-end">
-                <a class="btn btn-outline-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
-            </div>
+            {% if not ticket.review_set.get and 'create' not in request.get_full_path %}
+                {% if user != user_post and user_post.pk not in followed_user_pk %}
+                    <div class="d-flex justify-content-center justify-content-md-end">
+                        <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseButton" role="button" aria-expanded="false" aria-controls="collapseExample">Write a review</a>
+                    </div>
+                    <div class="collapse" id="collapseButton">
+                        <div class="d-flex justify-content-center justify-content-md-end">
+                            <p class="text-danger">Follow this user to write a review</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-center justify-content-md-end">
+                        <a class="btn btn-outline-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
+                    </div>
+                {% endif %}
             {% endif %}
         </section>
     {% if review %}</article>{% endif %}

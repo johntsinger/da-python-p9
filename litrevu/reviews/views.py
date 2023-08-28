@@ -78,6 +78,9 @@ class UserPostView(LoginRequiredMixin, ListView):
             flat=True
         )
         context['followed_user_pk'] = followed_user_pk
+        User = get_user_model()
+        print(self.kwargs['pk'])
+        context['user_post'] = User.objects.get(pk=self.kwargs['pk'])
         return context
 
     def post(self, request, *args, **kwargs):
