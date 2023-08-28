@@ -47,15 +47,15 @@ If you don't have Python 3, please visit : https://www.python.org/downloads/ to 
 
 ## Run the program :
 
-go to litrevu folder :
+Go to the litrevu folder :
 
     cd litrevu
 
-run server :
+Run the server :
 
     python manage.py runserver
 
-open a browser and go to :
+Open a browser and go to :
 
     127.0.0.1:8000
 
