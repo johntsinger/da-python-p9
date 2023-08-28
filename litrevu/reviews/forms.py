@@ -1,7 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Div, HTML, Submit
 from crispy_forms.bootstrap import InlineRadios, FieldWithButtons
-from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django import forms
@@ -41,7 +40,7 @@ class ReviewForm(forms.ModelForm):
         fields = ('headline', 'rating', 'body')
 
     def __init__(self, *args, **kwargs):
-        """Add FormHelper to make RadioSelect inline"""
+        """Add FormHelper to render RadioSelect inline"""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -82,6 +81,7 @@ class SubscriptionFrom(forms.ModelForm):
         fields = ('username',)
 
     def __init__(self, *args, **kwargs):
+        """Add FormHelper to render TextInput as FieldWithButtons"""
         if kwargs.get('request'):
             self.request = kwargs.pop('request')
         super().__init__(*args, **kwargs)
@@ -98,6 +98,9 @@ class SubscriptionFrom(forms.ModelForm):
         )
 
     def clean_username(self):
+        """Clean username input.
+        Gets an username returns an User object
+        """
         User = get_user_model()
         try:
             followed_user = User.objects.get(

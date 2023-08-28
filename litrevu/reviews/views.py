@@ -71,7 +71,8 @@ class UserPostView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """Add followed_user_pk to context to check if current user
-        follows the user related to the user-posts page"""
+        follows the user related to the user-posts page and
+        user_post to get the user of the user-post page"""
         context = super().get_context_data(**kwargs)
         followed_user_pk = self.request.user.following.values_list(
             'followed_user',
@@ -79,11 +80,11 @@ class UserPostView(LoginRequiredMixin, ListView):
         )
         context['followed_user_pk'] = followed_user_pk
         User = get_user_model()
-        print(self.kwargs['pk'])
         context['user_post'] = User.objects.get(pk=self.kwargs['pk'])
         return context
 
     def post(self, request, *args, **kwargs):
+        """On post create UserFollows"""
         user_follow = UserFollows.objects.create(
             user=self.request.user,
             followed_user_id=self.kwargs['pk']
@@ -184,10 +185,13 @@ class ReviewCreateView(ReviewBaseView, CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """Dispatch form_valid method depending if ticket is created or not
+        else return form_invalid"""
         form = self.get_form(ReviewForm)
         ticket_form = None
         if not self.kwargs:
             ticket_form = self.get_form(TicketForm)
+
         if not self.kwargs and (form.is_valid() and ticket_form.is_valid()):
             return self.form_valid(form, ticket_form)
         elif self.kwargs and form.is_valid():
@@ -196,6 +200,7 @@ class ReviewCreateView(ReviewBaseView, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form, form2=None):
+        """Create ticket if no ticket else get it then create review"""
         if form2:
             ticket = form2.save(commit=False)
             ticket.user = self.request.user
@@ -234,6 +239,7 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
             instance=Review.objects.get(pk=self.kwargs['pk'])
         )
 
+        # pass the pagination
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
 
