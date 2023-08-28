@@ -73,7 +73,6 @@ class SubscriptionFrom(forms.ModelForm):
             attrs={
                 'placeholder':
                     'Enter the username of the user you wish to follow',
-                'autofocus': True,
             }
         ),
     )

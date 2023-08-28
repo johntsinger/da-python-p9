@@ -92,7 +92,7 @@
             </div>
             {% if not review and 'create' not in request.get_full_path %}
             <div class="d-flex justify-content-center justify-content-md-end">
-                <a class="btn btn-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
+                <a class="btn btn-outline-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
             </div>
             {% endif %}
         </section>

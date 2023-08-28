@@ -69,6 +69,28 @@ class UserPostView(LoginRequiredMixin, ListView):
 
         return tickets
 
+    def get_context_data(self, **kwargs):
+        """Add followed_user_pk to context to check if current user
+        follows the user related to the user-posts page"""
+        context = super().get_context_data(**kwargs)
+        followed_user_pk = self.request.user.following.values_list(
+            'followed_user',
+            flat=True
+        )
+        context['followed_user_pk'] = followed_user_pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        user_follow = UserFollows.objects.create(
+            user=self.request.user,
+            followed_user_id=self.kwargs['pk']
+        )
+        messages.success(
+            request,
+            f'You are now follow user {user_follow.followed_user}'
+        )
+        return self.get(request, *args, **kwargs)
+
 
 class TicketBaseView(LoginRequiredMixin, SuccessMessageMixin, View):
     model = Ticket
