@@ -57,11 +57,12 @@ Run the server :
 
 Open a browser and go to :
 
-    127.0.0.1:8000
+http://127.0.0.1:8000/
 
 Here we go !
 
 # Test users informations :
+
 
 
 
