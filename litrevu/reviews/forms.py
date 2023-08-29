@@ -29,7 +29,6 @@ class ReviewForm(forms.ModelForm):
     ]
 
     rating = forms.ChoiceField(
-        label='Rating',
         widget=forms.RadioSelect,
         choices=RATINGS,
         initial=0,
@@ -50,7 +49,7 @@ class ReviewForm(forms.ModelForm):
                 css_class=(
                     "my-2 gap-4 gap-md-0"
                     " d-flex justify-content-between flex-wrap"
-                )
+                ),
             ),
             Field('body'),
             Div(
@@ -72,6 +71,7 @@ class SubscriptionFrom(forms.ModelForm):
             attrs={
                 'placeholder':
                     'Enter the username of the user you wish to follow',
+                'autocomplete': 'username'
             }
         ),
     )
@@ -93,7 +93,6 @@ class SubscriptionFrom(forms.ModelForm):
                     'submit',
                     'Follow'
                 ),
-                input_size="input-group-sm",
             )
         )
 

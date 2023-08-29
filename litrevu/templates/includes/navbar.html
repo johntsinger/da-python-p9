@@ -19,7 +19,7 @@
             <div class="navbar-nav">
                 <div class="nav-item dropdown">
                     {% if user.is_authenticated %}
-                    <span id="user" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="nav-link dropdown-toggle {% if user.is_authenticated %} border rounded-pill d-inline-block pe-2{% endif %}" role="button" data-bs-display="static">
+                    <span id="user" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="nav-link dropdown-toggle {% if user.is_authenticated %} border rounded-pill d-inline-block pe-2{% endif %}" role="button" data-bs-display="static" tabindex="0">
                         <img class="object-fit-cover rounded-circle mx-2 mx-lg-0" width="30" height="30" src="{{ user.userprofile.image.url }}" alt="{{ user.username }} profile picture">
                         <span class="ms-1">
                         {{ user }}

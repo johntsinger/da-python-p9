@@ -1,20 +1,24 @@
 <div class="d-flex flex-column align-items-center flex-md-row justify-content-md-around pt-1">
     {% if object.image %}
     <div class="d-flex flex-column align-items-center gap-2 rounded mb-4 mb-md-0">
-            <label>Current Image</label>
+        <figure>
+            <figcaption class="text-center pb-2">Current Image</figcaption class="text-center pb-2">
             {% if object == request.user.userprofile %}
             <img class="object-fit-cover rounded-circle" width="150" height="150" src="{{ object.image.url }}" alt="Current Profile Image">
             {% else %}
             <img class="img-thumbnail" width="150px" height="auto" src="{{ object.image.url }}" alt="Current Image">
             {% endif %}
+        </figure>
     </div>
     {% endif %}
     <div id=selected-image class="d-flex flex-column align-items-center gap-2 rounded d-none">
-        <label>Selected Image</label>
-        {% if object == request.user.userprofile %}
-        <img id="image" class="object-fit-cover rounded-circle" width="150" height="150" src="" alt="Selected Image">
-        {% else %}
-        <img id="image" class="img-thumbnail" width="150px" height="auto" src="" alt="Selected Image">
-        {% endif %}
+        <figure>
+            <figcaption class="text-center pb-2">Selected Image</figcaption>
+            {% if object == request.user.userprofile %}
+            <img id="image" class="object-fit-cover rounded-circle" width="150" height="150" src="" alt="Selected Image">
+            {% else %}
+            <img id="image" class="img-thumbnail" width="150px" height="auto" src="" alt="Selected Image">
+            {% endif %}
+        </figure>
     </div>
 </div>
