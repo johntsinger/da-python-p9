@@ -18,7 +18,7 @@
                     <small class="text-secondary">{{ review.time_created|date:"H:i, M d, Y" }}</small>
                 </div>
                 <div class="me-md-auto">
-                    <h6 class="ms-md-4 mb-0"><span class="badge text-bg-primary">Review</span></h6>
+                    <h6 class="ms-md-4 mb-0"><span class="badge text-bg-success">Review</span></h6>
                 </div>
                 {% if 'create' not in request.get_full_path %}
                 {% if user == review.user %}

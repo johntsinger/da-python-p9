@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{ object.time_created|date:'U' }}{{ modal_id }}" tabindex="-1" aria-labelledby="deleteAccountModal" aria-hidden="true">
+<div class="modal fade" id="{{ object.time_created|date:'U' }}{{ modal_id }}" tabindex="-1" aria-labelledby="deleteFormModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content rounded-3 border" style="background-color: #f0f2f5;">
             <div class="modal-header">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex flex-column w-100">
-                        <button type="button" class="btn btn-secondary mb-4" data-bs-dismiss="modal">No, I've changed my mind</button>
+                        <button type="button" class="btn btn-secondary mb-4" data-bs-dismiss="modal" onclick="this.body">No, I've changed my mind</button>
                         <button type="submit" class="btn btn-danger">{{ modal_button_value }}</button>
                     </div>
                 </div>

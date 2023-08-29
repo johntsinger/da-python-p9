@@ -8,7 +8,7 @@
             Update Review
         </legend>
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
-            {% csrf_token %}
+            <!-- csrf_token passed through crispy form tag -->
             {% crispy form %}
             <!-- Butons created in form by crispy-form -->
         </form>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html style="height: calc(100vh - 65px); margin-top: 65px; overflow: hidden;">
+<html lang="en" class="overflow-hidden" style="height: calc(100% - 65px); margin-top: 65px;">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="">
         <title>LITRevu</title>
     </head>
-    <body style="background-color: #fafafa; height: 100%; overflow-y: auto;">
+    <body class="overflow-y-auto" style="background-color: #fafafa; height: 100%;">
         <header>
             {% block nav %}{% include 'includes/navbar.html' %}{% endblock nav %}
         </header>
