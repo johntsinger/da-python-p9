@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 
 {% block h1 %}
-    {% if 'user-post' in request.get_full_path %}
+    {% if request.resolver_match.url_name == 'user-posts' %}
         {% if user_post == user %}
             Your tickets and reviews
         {% else %}
@@ -13,7 +13,7 @@
 {% endblock h1 %}
 
 {% block button-follow %}
-    {% if 'user-post' in request.get_full_path %}
+    {% if request.resolver_match.url_name == 'user-posts' %}
         {% if user_post != user and user_post.pk not in followed_user_pk %}
             <div class="container my-2 mt-4">
                 <p class="text-center mt-2 mb-1">You don't follow user {{ user_post }} ! Follow him now</p>
@@ -39,7 +39,7 @@
     <div class="container">
         {% for ticket in ticket_list %}
             {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}
-            {% if 'user-post' in request.get_full_path and ticket.user == ticket.review_set.get.user %}
+            {% if request.resolver_match.url_name == 'user-posts' and ticket.user == ticket.review_set.get.user %}
                 {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket %}
             {% endif %}
         {% endfor %}
