@@ -15,6 +15,7 @@
                 {{ ticket_form.media }}
                 {{ ticket_form|crispy }}
                 {% include 'includes/image_preview.html' with object=ticket %}
+                <input type="hidden" name="previous_url" value="{% if previous_url %}{{ previous_url }}{% else %}{{ request.META.HTTP_REFERER }}{% endif %}">
             {% endif %}
             <legend class="border-bottom py-2">
             Create Review

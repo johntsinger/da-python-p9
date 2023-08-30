@@ -112,19 +112,38 @@ class TicketCreateView(TicketBaseView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        instance = None
         if self.kwargs:
-            instance = Ticket.objects.get(pk=self.kwargs['pk'])
-        context['form'] = TicketForm(
-            self.request.POST or None,
-            instance=instance
-        )
+            context['form'] = TicketForm(
+                self.request.POST or None,
+                instance=Ticket.objects.get(pk=self.kwargs['pk'])
+            )
+        else:
+            context['form_media'] = TicketForm(
+                self.request.POST or None,
+            )
+
         return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        self.object = None
+        messages.error(
+            self.request,
+            "Please correct the errors below !")
+        # get previous_url senf by input hidden in form
+        # and pass it to render_to_response to use it when the
+        # page reload
+        if 'previous_url' in self.request.POST:
+            previous_url = self.request.POST['previous_url']
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                previous_url=previous_url,
+            ),
+        )
 
 
 class TicketUpdateView(TicketBaseView, UpdateView):
@@ -133,10 +152,17 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = TicketForm(
-            self.request.POST or None,
-            instance=Ticket.objects.get(pk=self.kwargs['pk'])
-        )
+        if 'form' not in kwargs:
+            context['form'] = TicketForm(
+                self.request.POST or None,
+                instance=Ticket.objects.get(pk=self.kwargs['pk']),
+            )
+        else:
+            # pass another for to context so that it can be used in
+            # the model to load its form.media,
+            # as the other form's media is curiously empty
+            context['form_media'] = TicketForm()
+
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
 
@@ -148,8 +174,20 @@ class TicketUpdateView(TicketBaseView, UpdateView):
             self.success_url += (
                 f'?page={self.request.GET["page"]}#ticket{ticket.id}'
             )
-            print(self.request.POST)
         return str(self.success_url)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            "Please correct the errors below !")
+        if 'previous_url' in self.request.POST:
+            previous_url = self.request.POST['previous_url']
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                previous_url=previous_url,
+            ),
+        )
 
 
 class TicketDeleteView(TicketBaseView, DeleteView):
@@ -177,11 +215,13 @@ class ReviewCreateView(ReviewBaseView, CreateView):
         if self.kwargs:
             ticket = get_object_or_404(Ticket, pk=self.kwargs['pk'])
             context['ticket'] = ticket
+
         context['ticket_form'] = TicketForm(
             self.request.POST or None,
             self.request.FILES or None,
             instance=ticket
         )
+
         context['form'] = ReviewForm(
             self.request.POST or None
         )
@@ -225,9 +265,12 @@ class ReviewCreateView(ReviewBaseView, CreateView):
         messages.error(
             self.request,
             "Please correct the errors below !")
+        if 'previous_url' in self.request.POST:
+            previous_url = self.request.POST['previous_url']
         return self.render_to_response(
             self.get_context_data(
-                form=form
+                form=form,
+                previous_url=previous_url,
             ),
         )
 
@@ -242,7 +285,6 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
             self.request.POST or None,
             instance=Review.objects.get(pk=self.kwargs['pk'])
         )
-
         # pass the pagination
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
