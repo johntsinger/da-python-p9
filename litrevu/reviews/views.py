@@ -315,7 +315,10 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
             self.request.POST or None,
             instance=Review.objects.get(pk=self.kwargs['pk'])
         )
-        context['ticket'] = get_object_or_404(Review, pk=self.kwargs['pk']).ticket
+        context['ticket'] = get_object_or_404(
+            Review,
+            pk=self.kwargs['pk']
+        ).ticket
         # pass the pagination
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
