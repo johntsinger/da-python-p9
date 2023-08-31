@@ -8,7 +8,8 @@ from utils.media import images_path
 class User(AbstractUser):
     email = models.EmailField(
         unique=True,
-        help_text='Required.')
+        help_text='Required.'
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
