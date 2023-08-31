@@ -20,7 +20,7 @@
                 <div class="me-md-auto">
                     <h6 class="ms-md-4 mb-0"><span class="badge text-bg-success">Review</span></h6>
                 </div>
-                {% if 'create' not in request.get_full_path %}
+                {% if 'create' not in request.get_full_path and 'change' not in request.get_full_path %}
                 {% if user == review.user %}
                  <div class="d-flex justify-content-end gap-2">
                     <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}?page={{ page_obj.number }}">Update</a>
@@ -42,7 +42,7 @@
                         {% if i|add:'1' <= review.rating %}
                         <i class="bi bi-star-fill" style="color: #ffc107;"></i>
                         {% else %}
-                        <i class="bi bi-star" style="color: #cccccc;"></i>
+                        <i class="bi bi-star" style="color: #bdbdbd;"></i>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -69,7 +69,7 @@
                 <div class="me-md-auto">
                     <h6 class="ms-md-4 mb-0"><span class="badge text-bg-primary">Ticket</span></h6>
                 </div>
-                {% if 'create' not in request.get_full_path %}
+                {% if 'create' not in request.get_full_path and 'change' not in request.get_full_path %}
                     {% if user == ticket.user %}
                      <div class="d-flex justify-content-end gap-2">
                         <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
@@ -102,8 +102,8 @@
                         <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseButton{{ ticket.id }}" role="button" aria-expanded="false" aria-controls="collapse">Write a review</a>
                     </div>
                     <div class="collapse" id="collapseButton{{ ticket.id }}">
-                        <div class="d-flex justify-content-center justify-content-md-end">
-                            <a class="text-danger" href="#title">Follow this user to write a review</a>
+                        <div class="d-flex justify-content-center justify-content-md-end mt-2">
+                            <a class="text-danger link-offset-1" href="#title">Follow this user to write a review</a>
                         </div>
                     </div>
                 {% else %}

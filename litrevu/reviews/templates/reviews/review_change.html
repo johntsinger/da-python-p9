@@ -8,7 +8,14 @@
             Update Review
         </legend>
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
+            <legend class="border-bottom py-2 px-2">
+                Ticket
+            </legend>
+            {% include 'reviews/includes/ticket_snippet.html' with color='#fff' review=None %}
             <!-- csrf_token passed through crispy form tag -->
+            <legend class="border-bottom py-2">
+                Your Review
+            </legend>
             {% crispy form %}
             <!-- Butons created in form by crispy-form -->
         </form>

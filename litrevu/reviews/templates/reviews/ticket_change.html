@@ -12,8 +12,6 @@
         <form method="post" enctype="multipart/form-data" class="mx-2 mx-md-4 my-4 pt-2">
             {% csrf_token %}
             {{ form.media }}
-            <!-- needed because form.media is empty if form invalid -->
-            {{ form_media.media }}
             {{ form|crispy }}
             {% include 'includes/image_preview.html' with object=ticket %}
             {% include 'reviews/includes/submit_buttons_form.html' %}

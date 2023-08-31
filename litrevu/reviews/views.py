@@ -110,6 +110,7 @@ class TicketCreateView(TicketBaseView, CreateView):
     template_name = 'reviews/ticket_create.html'
     success_message = 'Your ticket has been successfully created !'
 
+    """
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.kwargs:
@@ -122,6 +123,21 @@ class TicketCreateView(TicketBaseView, CreateView):
                 self.request.POST or None,
             )
 
+        return context
+    """
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        instance = None
+        if self.kwargs:
+            instance = Ticket.objects.get(pk=self.kwargs['pk'])
+        context['form'] = TicketForm(
+            self.request.POST or None,
+            self.request.FILES or None,
+            instance=instance
+        )
+        if 'page' in self.request.GET:
+            context['page'] = self.request.GET['page']
         return context
 
     def form_valid(self, form):
@@ -150,6 +166,7 @@ class TicketUpdateView(TicketBaseView, UpdateView):
     template_name = 'reviews/ticket_change.html'
     success_message = 'Your ticket has been successfully updated !'
 
+    """
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if 'form' not in kwargs:
@@ -163,6 +180,19 @@ class TicketUpdateView(TicketBaseView, UpdateView):
             # as the other form's media is curiously empty
             context['form_media'] = TicketForm()
 
+        if 'page' in self.request.GET:
+            context['page'] = self.request.GET['page']
+
+        return context
+    """
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = TicketForm(
+            self.request.POST or None,
+            self.request.FILES or None,
+            instance=Ticket.objects.get(pk=self.kwargs['pk'])
+        )
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
 
@@ -285,6 +315,7 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
             self.request.POST or None,
             instance=Review.objects.get(pk=self.kwargs['pk'])
         )
+        context['ticket'] = get_object_or_404(Review, pk=self.kwargs['pk']).ticket
         # pass the pagination
         if 'page' in self.request.GET:
             context['page'] = self.request.GET['page']
