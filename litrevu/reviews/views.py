@@ -110,22 +110,6 @@ class TicketCreateView(TicketBaseView, CreateView):
     template_name = 'reviews/ticket_create.html'
     success_message = 'Your ticket has been successfully created !'
 
-    """
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.kwargs:
-            context['form'] = TicketForm(
-                self.request.POST or None,
-                instance=Ticket.objects.get(pk=self.kwargs['pk'])
-            )
-        else:
-            context['form_media'] = TicketForm(
-                self.request.POST or None,
-            )
-
-        return context
-    """
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         instance = None
@@ -165,26 +149,6 @@ class TicketCreateView(TicketBaseView, CreateView):
 class TicketUpdateView(TicketBaseView, UpdateView):
     template_name = 'reviews/ticket_change.html'
     success_message = 'Your ticket has been successfully updated !'
-
-    """
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if 'form' not in kwargs:
-            context['form'] = TicketForm(
-                self.request.POST or None,
-                instance=Ticket.objects.get(pk=self.kwargs['pk']),
-            )
-        else:
-            # pass another for to context so that it can be used in
-            # the model to load its form.media,
-            # as the other form's media is curiously empty
-            context['form_media'] = TicketForm()
-
-        if 'page' in self.request.GET:
-            context['page'] = self.request.GET['page']
-
-        return context
-    """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
