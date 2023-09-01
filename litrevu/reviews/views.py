@@ -62,14 +62,15 @@ class UserPostView(LoginRequiredMixin, ListView):
         """
         User = get_user_model()
         user = User.objects.get(id=self.kwargs['pk'])
+
+        # Annotate each queryset because annotate
+        # is not supported after union
         tickets = (
             # tickets created by this user
             user.ticket_set.all()
             # tickets with a review created by this user
             | Ticket.objects.filter(review__user=user)
         ).annotate(
-            # Annotate after filter because annotate
-            # is not supported after union
             duplicate=Value(False, BooleanField()),
             date=Case(
                 When(
