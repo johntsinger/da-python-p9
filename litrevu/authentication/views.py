@@ -172,6 +172,11 @@ def parameters_view(request):
                 else:
                     messages.error(request, 'Wrong username or password.')
                     return redirect('parameters')
+            messages.error(
+                request,
+                'Invalid email address. Enter a valid email address.'
+            )
+            return redirect('parameters')
 
     return render(
         request,
