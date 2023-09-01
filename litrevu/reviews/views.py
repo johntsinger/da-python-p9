@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
-from django.db.models import Q, Case, When
+from django.db.models import Q, F, Case, When, Value, BooleanField
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -58,13 +58,30 @@ class UserPostView(LoginRequiredMixin, ListView):
         User = get_user_model()
         user = User.objects.get(id=self.kwargs['pk'])
         tickets = (
+            # tickets created by this user or
+            # tickets with a review created by this user
             user.ticket_set.all()
             | Ticket.objects.filter(review__user=user)
         ).annotate(
+            # Annotate after filter because annotate
+            # is not supported after union
+            duplicate=Value(False, BooleanField()),
             date=Case(
-                When(review__isnull=False, then="review__time_created"),
+                When(
+                    review__isnull=False,
+                    then="review__time_created"),
                 default="time_created"
             )
+        ).union(
+            # tickets created by this user if the review of these
+            # tickets was also created by this user
+            Ticket.objects.filter(
+                Q(review__isnull=False) & Q(review__user=user) & Q(user=user)
+            ).annotate(
+                duplicate=Value(True, BooleanField()),
+                date=F("time_created")
+            ),
+            all=True,
         ).order_by("-date")
 
         return tickets

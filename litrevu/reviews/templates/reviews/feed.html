@@ -38,9 +38,10 @@
     {% endif %}
     <div class="container">
         {% for ticket in ticket_list %}
-            {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}
-            {% if request.resolver_match.url_name == 'user-posts' and ticket.user == ticket.review_set.get.user %}
+            {% if request.resolver_match.url_name == 'user-posts' and ticket.duplicate %}
                 {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket %}
+            {% else %}
+                {% include 'reviews/includes/ticket_snippet.html' with color='#f0f2f5' ticket=ticket review=ticket.review_set.get %}
             {% endif %}
         {% endfor %}
     </div>
