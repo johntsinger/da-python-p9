@@ -55,12 +55,17 @@ class UserPostView(LoginRequiredMixin, ListView):
     template_name = 'reviews/feed.html'
 
     def get_queryset(self):
+        """Get tickets queryset.
+        Use union to duplicate some tickets when the ticket and its
+        review were created by the same user to display it twice,
+        the ticket alone then the ticket with the review
+        """
         User = get_user_model()
         user = User.objects.get(id=self.kwargs['pk'])
         tickets = (
-            # tickets created by this user or
-            # tickets with a review created by this user
+            # tickets created by this user
             user.ticket_set.all()
+            # tickets with a review created by this user
             | Ticket.objects.filter(review__user=user)
         ).annotate(
             # Annotate after filter because annotate
@@ -81,7 +86,7 @@ class UserPostView(LoginRequiredMixin, ListView):
                 duplicate=Value(True, BooleanField()),
                 date=F("time_created")
             ),
-            all=True,
+            all=True,  # allow duplicate values
         ).order_by("-date")
 
         return tickets
