@@ -4,22 +4,22 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from authentication.models import User, UserProfile
 
 
-class MyUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = '__all__'
 
 
-class MyUserChangeForm(UserChangeForm):
+class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
         fields = '__all__'
 
 
-class MyUserAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     model = User
-    form = MyUserChangeForm
-    add_form = MyUserCreationForm
+    form = CustomUserChangeForm
+    add_form = CustomUserCreationForm
     fieldsets = (
         (None, {'fields': ('email', 'password', 'username')}),
         ('Personal info', {'fields': ('first_name', 'last_name',)}),
@@ -39,5 +39,5 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'image')
 
 
-admin.site.register(User, MyUserAdmin)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
