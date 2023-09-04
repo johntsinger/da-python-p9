@@ -109,7 +109,7 @@ Here we go !
 
 | Username | Email | Password |
 | --- | --- | --- |
-| admin | admin@litrevu.com | litrevu |
+| admin | admin<span>@</span>litrevu.com | litrevu |
 
 #### Create new superuser :
 
@@ -131,8 +131,8 @@ You can use either admin or test users.
 
 | Username | Email | Password |
 | --- | --- | --- |
-| usertest1 | user1@test.com | wxcv1234 |
-| usertest2 | user2@test.com | wxcv1234 |
+| usertest1 | user1<span>@</span>test.com | wxcv1234 |
+| usertest2 | user2<span>@</span>test.com | wxcv1234 |
 
 ## Contact :
 Jonathan Singer - john.t.singer@gmail.com\
