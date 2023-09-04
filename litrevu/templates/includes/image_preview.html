@@ -1,8 +1,8 @@
 <div class="d-flex flex-column align-items-center flex-md-row justify-content-md-around pt-1">
     {% if object.image %}
-    <div class="d-flex flex-column align-items-center gap-2 rounded mb-4 mb-md-0">
+    <div class="d-flex flex-column align-items-center gap-2 rounded">
         <figure>
-            <figcaption class="text-center pb-2">Current Image</figcaption class="text-center pb-2">
+            <figcaption class="text-center pb-2">Current Image</figcaption>
             {% if object == request.user.userprofile %}
             <img class="object-fit-cover rounded-circle" width="150" height="150" src="{{ object.image.url }}" alt="Current Profile Image">
             {% else %}

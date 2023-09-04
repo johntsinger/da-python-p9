@@ -9,7 +9,7 @@
 {% block content %}
     <div class="gap-4 px-0 container-lg d-flex flex-column justify-content-lg-around">
         <div class="gap-4 d-flex flex-column flex-lg-row">
-            <div class="order-last order-lg-first container-lg px-4 rounded-3 border" style="background-color: #f0f2f5;">
+            <div class="order-last order-lg-first container-lg px-4 rounded-3 border d-flex flex-column justify-content-between" style="background-color: #f0f2f5;">
                 <legend class="border-bottom py-2">
                     Change my password
                 </legend>
@@ -21,12 +21,12 @@
                     </div>
                 </form>
             </div>
-            <div class="order-first order-lg-last container-lg px-4 rounded-3 border" style="background-color: #f0f2f5;">
+            <div class="order-first order-lg-last container-lg px-4 rounded-3 border d-flex flex-column justify-content-between" style="background-color: #f0f2f5;">
                 <legend class="border-bottom py-2">
                     Change my image
                 </legend>
                     {% include 'includes/image_preview.html' with object=user.userprofile %}
-                <form method="post" class="mx-2 mx-md-4 my-3" enctype="multipart/form-data">
+                <form method="post" class="mx-0 mx-md-4 pt-2" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ image_form.media }}
                     {{ image_form|crispy }}
