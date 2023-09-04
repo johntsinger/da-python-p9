@@ -51,7 +51,10 @@ class ReviewForm(forms.ModelForm):
                     " d-flex justify-content-between flex-wrap"
                 ),
             ),
-            Field('body'),
+            Field(
+                'body',
+                placeholder='Description of your review'
+            ),
             Div(
                 HTML(
                     "{% include 'reviews/includes/submit_buttons_form.html' %}"
