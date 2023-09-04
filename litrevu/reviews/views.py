@@ -187,7 +187,10 @@ class TicketUpdateView(TicketBaseView, UpdateView):
 
     def get_success_url(self):
         ticket = self.get_object()
-        if 'page' in self.request.GET:
+        if 'previous_url' in self.request.POST:
+            self.success_url = self.request.POST['previous_url'] \
+                + f'#ticket{ticket.id}'
+        elif 'page' in self.request.GET:
             self.success_url += (
                 f'?page={self.request.GET["page"]}#ticket{ticket.id}'
             )
@@ -314,7 +317,11 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
 
     def get_success_url(self):
         review = self.get_object()
-        if 'page' in self.request.GET:
+        print(self.request.POST)
+        if 'previous_url' in self.request.POST:
+            self.success_url = self.request.POST['previous_url'] \
+                + f'#ticket{review.ticket.id}'
+        elif 'page' in self.request.GET:
             self.success_url += (
                 f'?page={self.request.GET["page"]}#ticket{review.ticket.id}'
             )

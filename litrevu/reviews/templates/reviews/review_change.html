@@ -16,6 +16,7 @@
             <legend class="border-bottom py-2">
                 Your Review
             </legend>
+            <input type="hidden" name="previous_url" value="{% if previous_url %}{{ previous_url }}{% else %}{{ request.META.HTTP_REFERER }}{% endif %}">
             {% crispy form %}
             <!-- Butons created in form by crispy-form -->
         </form>
