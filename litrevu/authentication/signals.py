@@ -15,5 +15,6 @@ def delete_empty_folder(sender, **kwargs):
     is empty if it is delete the folder.
     """
     path = Path(settings.MEDIA_ROOT, kwargs['file_name']).parent
-    if not next(path.iterdir(), None):
-        path.rmdir()
+    if path.exists():
+        if not next(path.iterdir(), None):
+            path.rmdir()
