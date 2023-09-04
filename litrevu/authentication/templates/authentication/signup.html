@@ -12,8 +12,8 @@
             {{ user_form|crispy }}
             <p class="help">{{ field.help_text|safe }}</p>
             <div class="vstack gap-4 pb-4 my-4 d-flex flex-column">
-                <button class="btn btn-primary" type="submit">Sign up</button>
-                <a class="btn btn-secondary" href="{% url 'feed' %}" role="button">Return</a>
+                <button class="btn btn-primary" type="submit" aria-label="Sign up">Sign up</button>
+                <a class="btn btn-secondary" href="{% url 'feed' %}" role="button" arial-label="Return">Return</a>
             </div>
         </form>
     </div>

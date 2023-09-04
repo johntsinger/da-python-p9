@@ -12,13 +12,13 @@
                 {% csrf_token %}
                 {{ login_form|crispy }}
                 <div class="my-4 d-flex flex-column">
-                    <button class="btn btn-primary" type="submit">Login</button>
+                    <button class="btn btn-primary" type="submit" aria-label="Login">Login</button>
                 </div>
             </form>
         </div>
         <div class="mx-4">
             <div class="border-top pt-3 my-4">
-                <p>You don't have an account yet ? <a href="{% url 'signup' %}">Sign up now</a></p>
+                <p>You don't have an account yet ? <a href="{% url 'signup' %}" aria-label="Access sign up page">Sign up now</a></p>
             </div>
         </div>
     </div>

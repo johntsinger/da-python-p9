@@ -3,7 +3,7 @@
 <!-- Return button if user clicks on a ticket-->
 {% if request.resolver_match.url_name == 'ticket-detail' %}
     <div class="d-flex align-items-center">
-        <a class="text-decoration-none" href="{% if request.META.HTTP_REFERER %}{{request.META.HTTP_REFERER}}{% else %}{% url 'feed' %}?page={{ page }}{% endif %}#ticket{{ ticket.id }}"><svg width="24px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#0d6efd"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.7672 7.5431C11.0672 7.25744 11.0788 6.78271 10.7931 6.48276C10.5074 6.18281 10.0327 6.17123 9.73276 6.4569L10.7672 7.5431ZM4.48276 11.4569C4.18281 11.7426 4.17123 12.2173 4.4569 12.5172C4.74256 12.8172 5.21729 12.8288 5.51724 12.5431L4.48276 11.4569ZM5.51724 11.4569C5.21729 11.1712 4.74256 11.1828 4.4569 11.4828C4.17123 11.7827 4.18281 12.2574 4.48276 12.5431L5.51724 11.4569ZM9.73276 17.5431C10.0327 17.8288 10.5074 17.8172 10.7931 17.5172C11.0788 17.2173 11.0672 16.7426 10.7672 16.4569L9.73276 17.5431ZM5 11.25C4.58579 11.25 4.25 11.5858 4.25 12C4.25 12.4142 4.58579 12.75 5 12.75V11.25ZM19 12.75C19.4142 12.75 19.75 12.4142 19.75 12C19.75 11.5858 19.4142 11.25 19 11.25V12.75ZM9.73276 6.4569L4.48276 11.4569L5.51724 12.5431L10.7672 7.5431L9.73276 6.4569ZM4.48276 12.5431L9.73276 17.5431L10.7672 16.4569L5.51724 11.4569L4.48276 12.5431ZM5 12.75H19V11.25H5V12.75Z" fill="#0d6efd"></path> </g></svg>Return</a>
+        <a class="text-decoration-none" href="{% if request.META.HTTP_REFERER %}{{request.META.HTTP_REFERER}}{% else %}{% url 'feed' %}?page={{ page }}{% endif %}#ticket{{ ticket.id }}" aria-label="Return to previous page"><svg width="24px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#0d6efd"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.7672 7.5431C11.0672 7.25744 11.0788 6.78271 10.7931 6.48276C10.5074 6.18281 10.0327 6.17123 9.73276 6.4569L10.7672 7.5431ZM4.48276 11.4569C4.18281 11.7426 4.17123 12.2173 4.4569 12.5172C4.74256 12.8172 5.21729 12.8288 5.51724 12.5431L4.48276 11.4569ZM5.51724 11.4569C5.21729 11.1712 4.74256 11.1828 4.4569 11.4828C4.17123 11.7827 4.18281 12.2574 4.48276 12.5431L5.51724 11.4569ZM9.73276 17.5431C10.0327 17.8288 10.5074 17.8172 10.7931 17.5172C11.0788 17.2173 11.0672 16.7426 10.7672 16.4569L9.73276 17.5431ZM5 11.25C4.58579 11.25 4.25 11.5858 4.25 12C4.25 12.4142 4.58579 12.75 5 12.75V11.25ZM19 12.75C19.4142 12.75 19.75 12.4142 19.75 12C19.75 11.5858 19.4142 11.25 19 11.25V12.75ZM9.73276 6.4569L4.48276 11.4569L5.51724 12.5431L10.7672 7.5431L9.73276 6.4569ZM4.48276 12.5431L9.73276 17.5431L10.7672 16.4569L5.51724 11.4569L4.48276 12.5431ZM5 12.75H19V11.25H5V12.75Z" fill="#0d6efd"></path> </g></svg>Return</a>
     </div>
 {% endif %}
 <article id="ticket{{ ticket.id }}" class="rounded-3 border px-4 my-4" style="background-color: {{ color }};">
@@ -12,7 +12,7 @@
             <div class="d-flex flex-column flex-md-row gap-2 align-items-center my-2">
                 <div class="d-flex align-items-center gap-3">
                     <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ review.user.userprofile.image.url }}" alt="{{ review.user }} profile image">
-                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' review.user.id %}">{{ review.user }}</a>
+                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' review.user.id %}" aria-label="Access {{ review.user }}'s post">{{ review.user }}</a>
                 </div>
                 <div>
                     <small class="text-secondary">{{ review.time_created|date:"H:i, M d, Y" }}</small>
@@ -23,8 +23,8 @@
                 {% if 'create' not in request.get_full_path and 'change' not in request.get_full_path %}
                 {% if user == review.user %}
                  <div class="d-flex justify-content-end gap-2">
-                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}?page={{ page_obj.number }}">Update</a>
-                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.time_created|date:'U' }}{{ review.id }}">Delete</a>
+                    <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-review' review.id %}?page={{ page_obj.number }}" aria-label="Update your review {{ review.headline }}">Update</a>
+                    <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ review.time_created|date:'U' }}{{ review.id }}" aria-label="Delete your review {{ review.headline }}">Delete</a>
                     {% include 'includes/modal.html' with modal_id=review.id modal_title='Delete your review' modal_context_data=review.headline action="delete-review" object_id=review.id form='reviews/review_confirm_delete.html' object=review modal_button_value="Delete this review" %}
                 </div>
                 {% endif %}
@@ -33,7 +33,7 @@
         </header>
         <section class="mx-2 d-flex flex-column">
             <div class="my-2 d-flex flex-column flex-md-row align-items-center">
-                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
+                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}" aria-label="Access {{ review.headline }} detail page">
                     <h2 class="text-center">{{ review.headline|capfirst }}</h2>
                 </a>
                 <span class="mx-4" style="font-size: 24px;">-</span>
@@ -59,7 +59,7 @@
             <div class="d-flex flex-column flex-md-row gap-2 align-items-center my-2">
                 <div class="d-flex align-items-center gap-3">
                     <img class="rounded-circle object-fit-cover" width="30" height="30" src="{{ ticket.user.userprofile.image.url }}" alt="{{ ticket.user }} profile image">
-                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}">
+                    <a class="me-2 text-decoration-none" href="{% url 'user-posts' ticket.user.id %}" aria-label="Access {{ ticket.user }}'s posts">
                         {{ ticket.user }}
                     </a>
                 </div>
@@ -72,8 +72,8 @@
                 {% if 'create' not in request.get_full_path and 'change' not in request.get_full_path %}
                     {% if user == ticket.user %}
                      <div class="d-flex justify-content-end gap-2">
-                        <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}">Update</a>
-                        <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}">Delete</a>
+                        <a class="text-success me-2 link-offset-1-hover link-underline-success link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="{% url 'change-ticket' ticket.id %}?page={{ page_obj.number }}" aria-label="Update your ticket {{ ticket.title }}">Update</a>
+                        <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ ticket.time_created|date:'U' }}{{ ticket.id }}" aria-label="Delete your ticket {{ ticket.title }}">Delete</a>
                         {% include 'includes/modal.html' with modal_id=ticket.id modal_title='Delete your ticket' modal_context_data=ticket.title action="delete-ticket" object_id=ticket.id form='reviews/ticket_confirm_delete.html' object=ticket modal_button_value="Delete this ticket" %}
                     </div>
                     {% endif %}
@@ -82,7 +82,7 @@
         </header>
         <section class="mx-2 mb-4 d-flex flex-column">
             <div class="my-2 flex-column flex-md-row d-flex">
-                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}">
+                <a class="link-dark link-opacity-75-hover text-decoration-none" href="{% url 'ticket-detail' ticket.id %}" aria-label="Access {{ ticket.title }} detail page">
                     <h2 class="text-center">{{ ticket.title|capfirst }}</h2>
                 </a>
             </div>
@@ -99,16 +99,16 @@
             {% if not ticket.review_set.get and 'create' not in request.get_full_path %}
                 {% if user != user_post and user_post.pk not in followed_user_pk %}
                     <div class="d-flex justify-content-center justify-content-md-end">
-                        <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseButton{{ ticket.id }}" role="button" aria-expanded="false" aria-controls="collapse">Write a review</a>
+                        <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseButton{{ ticket.id }}" role="button" aria-expanded="false" aria-controls="collapse" aria-label="Write a review">Write a review</a>
                     </div>
                     <div class="collapse" id="collapseButton{{ ticket.id }}">
                         <div class="d-flex justify-content-center justify-content-md-end mt-2">
-                            <a class="text-danger link-offset-1" href="#title">Follow this user to write a review</a>
+                            <a class="text-danger link-offset-1" href="#title" aria-label="Go to follow this user">Follow this user to write a review</a>
                         </div>
                     </div>
                 {% else %}
                     <div class="d-flex justify-content-center justify-content-md-end">
-                        <a class="btn btn-outline-success" href="{% url 'create-review' ticket.id %}" role="button">Write a review</a>
+                        <a class="btn btn-outline-success" href="{% url 'create-review' ticket.id %}" role="button" aria-label="Write a review">Write a review</a>
                     </div>
                 {% endif %}
             {% endif %}

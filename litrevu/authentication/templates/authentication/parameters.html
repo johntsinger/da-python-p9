@@ -17,7 +17,7 @@
                     {% csrf_token %}
                     {{ password_form|crispy }}
                     <div class="my-4 d-flex flex-column">
-                        <button class="btn btn-primary" type="submit">Send</button>
+                        <button class="btn btn-primary" type="submit" aria-label="Send password change">Send</button>
                     </div>
                 </form>
             </div>
@@ -31,7 +31,7 @@
                     {{ image_form.media }}
                     {{ image_form|crispy }}
                     <div class="my-4 d-flex flex-column">
-                        <button class="btn btn-primary" type="submit">Send</button>
+                        <button class="btn btn-primary" type="submit" aria-label="Send image change">Send</button>
                     </div>
                 </form>
             </div>
@@ -45,7 +45,7 @@
                     {% csrf_token %}
                     {{ email_form|crispy }}
                     <div class="my-4 d-flex flex-column">
-                        <button class="btn btn-primary" type="submit">Send</button>
+                        <button class="btn btn-primary" type="submit" aria-label="Send email change">Send</button>
                     </div>
                 </form>
             </div>
@@ -57,7 +57,7 @@
                     {% csrf_token %}
                     {{ username_form|crispy }}
                     <div class="my-4 d-flex flex-column">
-                        <button class="btn btn-primary" type="submit">Send</button>
+                        <button class="btn btn-primary" type="submit" aria-label="Send username change">Send</button>
                     </div>
                 </form>
             </div>

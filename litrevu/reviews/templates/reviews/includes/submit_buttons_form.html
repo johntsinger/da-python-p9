@@ -1,9 +1,9 @@
 <div class="vstack gap-4 gap-md-0 my-4 py-4 d-flex flex-column flex-md-row">
     <div class="col-md-6 pe-md-3">
         <!-- request.META.HTTP_REFERER link to the previous page if any -->
-        <a class="btn btn-secondary w-100" href="{% if previous_url %}{{ previous_url }}{% elif request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'feed' %}?page={{ page }}{% endif %}#ticket{% if review %}{{ review.ticket.id }}{% else %}{{ ticket.id }}{% endif %}" role="button">Return</a>
+        <a class="btn btn-secondary w-100" href="{% if previous_url %}{{ previous_url }}{% elif request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'feed' %}?page={{ page }}{% endif %}#ticket{% if review %}{{ review.ticket.id }}{% else %}{{ ticket.id }}{% endif %}" role="button" aria-label="Return to previous page">Return</a>
     </div>
     <div class="col-md-6 ps-md-3">
-        <button class="btn btn-primary w-100" type="submit" name="ticket-submit">Send</button>
+        <button class="btn btn-primary w-100" type="submit" name="ticket-submit" aria-label="Send form">Send</button>
     </div>
 </div>

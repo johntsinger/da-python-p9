@@ -35,10 +35,10 @@
                         <div class="container p-2 d-flex flex-column flex-sm-row gap-3 rounded-3 border">
                             <div class="d-flex align-items-center gap-3 me-sm-auto text-wrap">
                                 <img class="rounded-circle object-fit-cover" width="40" height="40" src="{{ user_follow.followed_user.userprofile.image.url }}" alt="{{ user_follow.followed_user }} profile image">
-                                <a class="text-break me-2 text-decoration-none" href="{% url 'user-posts' user_follow.followed_user.id %}">{{ user_follow.followed_user }}</a>
+                                <a class="text-break me-2 text-decoration-none" href="{% url 'user-posts' user_follow.followed_user.id %}" aria-label="Access {{ user_follow.followed_user }}'s posts">{{ user_follow.followed_user }}</a>
                             </div>
                             <div class="d-flex align-items-center justify-content-center justify-content-sm-end">
-                                <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ user_follow.id }}">Unsubscribe</a>
+                                <a class="text-danger me-2 link-offset-1-hover link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover" type="button" href="#" data-bs-toggle="modal" data-bs-target="#{{ user_follow.id }}" aria-label="Unsubscribe {{ user_follow.followed_user }}">Unsubscribe</a>
                                 {% include 'includes/modal.html' with modal_id=user_follow.id modal_title='Stop following user' modal_context_data=user_follow.followed_user action='delete-userfollow' object_id=user_follow.id form='reviews/userfollows_confirm_delete.html' object=user_follow.followed_user modal_button_value="Stop following this user" %}
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                         <div class="container p-2 d-flex flex-column flex-md-row gap-3 rounded-3 border">
                             <div class="d-flex align-items-center gap-3">
                                 <img class="rounded-circle object-fit-cover" width="40" height="40" src="{{ user_followed_by.user.userprofile.image.url }}" alt="{{ user_followed_by.user.name }} profile image">
-                                <a class="me-2 text-decoration-none" href="{% url 'user-posts' user_followed_by.user.id %}">{{ user_followed_by.user }}</a>
+                                <a class="me-2 text-decoration-none" href="{% url 'user-posts' user_followed_by.user.id %}" aria-label="Access {{ user_followed_by.user }}'s posts">{{ user_followed_by.user }}</a>
                             </div>
                         </div>
                     {% endfor %}
