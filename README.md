@@ -115,7 +115,7 @@ Here we go !
 
 You can create a new superuser :
 
-    py manage.py createsuperuser
+    python manage.py createsuperuser
 
 Then follow the instructions.
 
