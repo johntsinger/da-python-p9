@@ -14,7 +14,7 @@ class UserFollowsAdminForm(forms.ModelForm):
         if user == followed_user or UserFollows already exists
         raise ValidationError.
         """
-        if 'user' and 'followed_user' in self.cleaned_data:
+        if all(key in self.cleaned_data for key in ('user', 'followed_user')):
             if self.cleaned_data['user'] == self.cleaned_data['followed_user']:
                 raise ValidationError("A user can't follow himself.")
             if UserFollows.objects.filter(
