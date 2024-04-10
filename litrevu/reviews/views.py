@@ -317,7 +317,6 @@ class ReviewUpdateView(ReviewBaseView, UpdateView):
 
     def get_success_url(self):
         review = self.get_object()
-        print(self.request.POST)
         if 'previous_url' in self.request.POST:
             self.success_url = self.request.POST['previous_url'] \
                 + f'#ticket{review.ticket.id}'
